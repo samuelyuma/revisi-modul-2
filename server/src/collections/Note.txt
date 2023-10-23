@@ -6,34 +6,9 @@ TODO ✅
 - Published Date
 - Category (relationship)
 - Content
-- Status (not started, on-progress, done)
+- Status (not started, on-progress, done) - position: sidebar
 
 LOG (relationship to categories & todo)
 - Change (category/todo)
 - Action (crud)
 - Timestamp
-
-hooks: {
-        afterChange: [
-            async ({ existingItem, updatedItem, req }) => {
-                const action = existingItem ? 'update' : 'create';
-
-                await addToChangelog({
-                    collection: 'categories',
-                    itemId: updatedItem._id,
-                    action,
-                    userId: req.user._id,
-                });
-            },
-        ],
-        afterDelete: [
-            async ({ item, req }) => {
-                await addToChangelog({
-                    collection: 'categories',
-                    itemId: item._id,
-                    action: 'delete',
-                    userId: req.user._id,
-                });
-            },
-        ],
-    },

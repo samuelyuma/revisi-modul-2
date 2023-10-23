@@ -1,5 +1,4 @@
 /** @type {import('payload/types').CollectionConfig} */
-/** @type {import('payload/types').GlobalAfterChangeHook} */
 
 const Categories = {
     slug: 'categories',
@@ -12,10 +11,6 @@ const Categories = {
             type: 'text',
         },
     ],
-    hooks: {
-        afterChange: [{}],
-        afterDelete: [{}],
-    },
 };
 
 export default Categories;

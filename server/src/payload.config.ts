@@ -1,4 +1,3 @@
-// payload.config.ts
 import path from 'path';
 
 import { payloadCloud } from '@payloadcms/plugin-cloud';
@@ -8,7 +7,7 @@ import { slateEditor } from '@payloadcms/richtext-slate';
 import { buildConfig } from 'payload/config';
 
 import Users from './collections/Users';
-import { Categories, Todo, Changelog } from './collections/Changelog';
+import Categories from './collections/Categories';
 
 export default buildConfig({
     admin: {
@@ -16,7 +15,7 @@ export default buildConfig({
         bundler: webpackBundler(),
     },
     editor: slateEditor({}),
-    collections: [Users, Changelog, Categories, Todo],
+    collections: [Users, Categories],
     typescript: {
         outputFile: path.resolve(__dirname, 'payload-types.ts'),
     },

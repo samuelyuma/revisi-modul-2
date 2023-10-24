@@ -12,11 +12,13 @@ const Todo = {
         },
         {
             name: 'publishedDate',
+            label: 'Published Date',
             type: 'date',
         },
         {
-            name: 'content',
-            type: 'richText',
+            name: 'category',
+            type: 'relationship',
+            relationTo: 'categories',
         },
         {
             name: 'status',

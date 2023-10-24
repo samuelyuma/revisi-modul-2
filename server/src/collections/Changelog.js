@@ -3,8 +3,8 @@
 const Changelog = {
     slug: 'changelog',
     access: {
-        create: () => false,
         read: () => true,
+        create: () => false,
         update: () => false,
         delete: () => false,
     },

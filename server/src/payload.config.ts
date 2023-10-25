@@ -11,6 +11,7 @@ import Categories from './collections/Categories';
 import Todo from './collections/Todo';
 
 export default buildConfig({
+    cors : "*",
     admin: {
         user: Users.slug,
         bundler: webpackBundler(),

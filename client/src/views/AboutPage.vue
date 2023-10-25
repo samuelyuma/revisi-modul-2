@@ -21,5 +21,37 @@ export default {
   components: {
     NavbarComponent,
   },
+  // belajar ngefetch 😭 biarin dulu plz ntar kalo dh jadi buang aj
+  methods: {
+    async categoriesAPI() {
+      try {
+        const response = await fetch('http://localhost:3000/api/todo');
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        const data = await response.json();
+        this.todo = data;
+        console.log(data);
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    },
+    async catAPI() {
+      try {
+        const response = await fetch('https://catfact.ninja/breeds');
+        if (!response.ok) {
+          throw new Error('Network response was not ok.');
+        }
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
+    }
+  },
+  mounted() {
+    this.categoriesAPI();
+    this.catAPI();
+  }
 };
 </script>

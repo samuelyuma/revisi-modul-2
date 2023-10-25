@@ -5,6 +5,12 @@ const Todo = {
     admin: {
         useAsTitle: 'title',
     },
+    access: {
+        read : () => true,
+        update : () => true,
+        delete : () => true,
+        create : () => true
+    },
     fields: [
         {
             name: 'title',
@@ -43,6 +49,18 @@ const Todo = {
             },
         },
     ],
+    hooks: {
+        afterChange: [
+            async ({
+                doc,
+                req,
+                previousDoc,
+                operation
+            }) => {
+                console.log(`coba aj dlu (todo)`);
+            },
+        ],
+    },
 };
 
 export default Todo;

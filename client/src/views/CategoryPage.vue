@@ -37,7 +37,7 @@
       <div class="flex-row gap-96">
         <!-- List rendering ✅ v-for: render array -->
         <div v-for="task in unfinishedTodo" :key="task.title"
-          :class="`todo-item ${task.status === 'done' ? 'done' : ''}`" class="flex items-center gap-2 mb-2">
+          :class="`todo-item ${task.status === 'not started'}`" class="flex items-center gap-2 mb-2">
 
           <!-- Render task details as before -->
           <p
@@ -81,7 +81,7 @@
           There's no completed task at the moment.
         </div>
         <div v-for="task in completedTodo" :key="task.title"
-          :class="`todo-item ${task.status === 'done' ? 'done' : ''}`" class="flex items-center gap-2 mb-2">
+          :class="`todo-item ${task.status === 'done'}`" class="flex items-center gap-2 mb-2">
 
           <!-- Render task details as before -->
           <p
@@ -142,7 +142,7 @@ export default {
     },
     unfinishedTodo() {
       return this.todo.filter(
-        (task) => task.status !== 'done' && task.category === this.categoryName
+        (task) => task.status === 'not started' && task.category === this.categoryName
       );
     },
     categoryTaskCount() {

@@ -116,7 +116,7 @@
 export default {
   data() {
     return {
-        : [], // initialize empty array for todo list
+      todo: [], // initialize empty array for todo list
       content_input: '', // initialize empty string for todo content
       date: '', // initialize empty string for date
       time: '', // initialize empty string for time

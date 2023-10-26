@@ -1,30 +1,33 @@
 /** @type {import('payload/types').CollectionConfig} */
+/** @type {import('payload').Payload} */
 
 const Todo = {
     slug: 'todo',
     admin: {
-        useAsTitle: 'title',
-    },
-    access: {
-        read : () => true,
-        update : () => true,
-        delete : () => true,
-        create : () => true
+        useAsTitle: 'name',
     },
     fields: [
         {
             name: 'title',
             type: 'text',
+            required: true,
         },
         {
             name: 'publishedDate',
-            label: 'Published Date',
             type: 'date',
+            label: 'Published Date',
+            admin: {
+                date: {
+                    pickerAppearance: 'dayAndTime',
+                    displayFormat: 'd MMM yyy h:mm:ss a',
+                },
+            },
         },
         {
             name: 'category',
             type: 'relationship',
             relationTo: 'categories',
+            required: true,
         },
         {
             name: 'status',
@@ -50,14 +53,44 @@ const Todo = {
         },
     ],
     hooks: {
+        afterOperation: [
+            async (args) => {
+                if (args.operation == 'create') {
+                    payload.create({
+                        collection: 'changelog',
+                        data: {
+                            type: 'Todo',
+                            name: args.result.title,
+                            action: 'Created',
+                        },
+                    });
+                }
+            },
+        ],
         afterChange: [
-            async ({
-                doc,
-                req,
-                previousDoc,
-                operation
-            }) => {
-                console.log(`coba aj dlu (todo)`);
+            async (args) => {
+                if (args.operation == 'update') {
+                    payload.create({
+                        collection: 'changelog',
+                        data: {
+                            type: 'Todo',
+                            name: args.doc.title,
+                            action: 'Updated',
+                        },
+                    });
+                }
+            },
+        ],
+        afterDelete: [
+            async (args) => {
+                payload.create({
+                    collection: 'changelog',
+                    data: {
+                        type: 'Todo',
+                        name: args.doc.title,
+                        action: 'Deleted.',
+                    },
+                });
             },
         ],
     },

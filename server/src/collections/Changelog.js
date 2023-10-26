@@ -3,12 +3,30 @@
 const Changelog = {
     slug: 'changelog',
     access: {
-        read: () => true,
         create: () => false,
+        read: () => true,
         update: () => false,
-        delete: () => false,
+        delete: () => true,
     },
-    fields: [],
+    fields: [
+        {
+            name: 'type',
+            label: 'Type',
+            type: 'text',
+            required: true,
+        },
+        {
+            name: 'name',
+            label: 'Title',
+            type: 'text',
+            required: true,
+        },
+        {
+            name: 'action',
+            type: 'text',
+            required: true,
+        },
+    ],
 };
 
 export default Changelog;

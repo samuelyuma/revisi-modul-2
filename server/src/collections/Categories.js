@@ -1,31 +1,57 @@
 /** @type {import('payload/types').CollectionConfig} */
+/** @type {import('payload').Payload} */
 
 const Categories = {
     slug: 'categories',
     admin: {
         useAsTitle: 'name',
     },
-    access: {
-        read : () => true,
-        update : () => true,
-        delete : () => true,
-        create : () => true
-    },
     fields: [
         {
             name: 'name',
             type: 'text',
+            required: true,
         },
     ],
     hooks: {
+        afterOperation: [
+            async (args) => {
+                if (args.operation == 'create') {
+                    payload.create({
+                        collection: 'changelog',
+                        data: {
+                            type: 'Category',
+                            name: args.result.name,
+                            action: 'Created',
+                        },
+                    });
+                }
+            },
+        ],
         afterChange: [
-            async ({
-                doc,
-                req,
-                previousDoc,
-                operation
-            }) => {
-                console.log(`coba aj dlu (categories)`);
+            async (args) => {
+                if (args.operation == 'update') {
+                    payload.create({
+                        collection: 'changelog',
+                        data: {
+                            type: 'Category',
+                            name: args.doc.name,
+                            action: 'Updated',
+                        },
+                    });
+                }
+            },
+        ],
+        afterDelete: [
+            async (args) => {
+                payload.create({
+                    collection: 'changelog',
+                    data: {
+                        type: 'Category',
+                        name: args.doc.name,
+                        action: 'Deleted',
+                    },
+                });
             },
         ],
     },

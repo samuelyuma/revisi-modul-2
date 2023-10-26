@@ -1,5 +1,6 @@
+import payload from 'payload';
+
 /** @type {import('payload/types').CollectionConfig} */
-/** @type {import('payload').Payload} */
 
 const Categories = {
     slug: 'categories',

@@ -70,6 +70,7 @@ export default {
     data() {
         return {
             new_category: '',
+            categories: [],
         };
     },
     methods: {
@@ -130,7 +131,6 @@ export default {
         },
     },
     mounted() {
-        this.name = localStorage.getItem('name');
         this.showCategories();
     },
 };

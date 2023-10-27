@@ -180,7 +180,7 @@ export default {
             await fetch('http://localhost:3000/api/todo')
                 .then((response) => response.json())
                 .then((data) => {
-                    this.todos = data.docs.map((todo) => todo.name);
+                    this.todos = data.docs.map((todo) => todo.title);
                     console.log(this.todos);
                 })
                 .catch((error) => {
@@ -195,7 +195,6 @@ export default {
 
             const newTask = {
                 title: this.content_input,
-                publishedDate: new Date().toISOString(),
                 category: this.categoryName, // Set the category based on the route parameter
                 status: 'not started',
             };

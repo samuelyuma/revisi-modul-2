@@ -32,33 +32,25 @@ const Categories = {
                             action: 'Created',
                         },
                     });
-                }
-            },
-        ],
-        afterChange: [
-            async (args) => {
-                if (args.operation == 'update') {
+                } else if (args.operation == 'updateByID') {
                     payload.create({
                         collection: 'changelog',
                         data: {
                             type: 'Category',
-                            name: args.doc.name,
-                            action: 'Updated',
+                            name: args.result.name,
+                            action: 'Update',
+                        },
+                    });
+                } else if (args.operation == 'deleteByID') {
+                    payload.create({
+                        collection: 'changelog',
+                        data: {
+                            type: 'Category',
+                            name: args.result.name,
+                            action: 'Delete',
                         },
                     });
                 }
-            },
-        ],
-        afterDelete: [
-            async (args) => {
-                payload.create({
-                    collection: 'changelog',
-                    data: {
-                        type: 'Category',
-                        name: args.doc.name,
-                        action: 'Deleted',
-                    },
-                });
             },
         ],
     },

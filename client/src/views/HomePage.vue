@@ -5,7 +5,7 @@
             <!-- Input bindings ✅ v-model: automatically update variable name to user input -->
             <input
                 type="text"
-                placeholder="Your name here"
+                placeholder="Your names"
                 v-model="name"
                 class="py-2 px-2 border-b-2 border-slate-800 mr-4 focus:outline-none text-4xl font-bold w-3/12 text-slate-800"
             />
@@ -82,9 +82,6 @@ export default {
 
             // insert inputted category to array if it matches the requirement
             this.categories.push(this.theNewCategory.trim());
-
-            // make theNewCategory empty again
-            this.theNewCategory = '';
         },
         removeCategory(category) {
             // take index of the selected category
@@ -92,6 +89,7 @@ export default {
             if (index !== -1) {
                 // check if category exists
                 this.categories.splice(index, 1); // remove one category
+                localStorage.setItem('categories', JSON.stringify(this.categories)); // update local storage
             }
         },
         redirectToCategory(category) {
@@ -123,6 +121,7 @@ export default {
                 console.log(response.data);
                 alert(`${newCategory.name} category added successfully!`);
 
+                this.new_category = ''; // empty input field
                 this.showCategories(); // nampilin data di konsol setelah nambah
             } catch (error) {
                 console.log(error.message);

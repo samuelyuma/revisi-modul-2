@@ -63,7 +63,7 @@ const Todo = {
                         collection: 'changelog',
                         data: {
                             type: 'Todo',
-                            name: args.result.name,
+                            name: args.result.title,
                             action: 'Created',
                         },
                     });
@@ -72,7 +72,7 @@ const Todo = {
                         collection: 'changelog',
                         data: {
                             type: 'Todo',
-                            name: args.result.name,
+                            name: args.result.title,
                             action: 'Update',
                         },
                     });
@@ -81,7 +81,7 @@ const Todo = {
                         collection: 'changelog',
                         data: {
                             type: 'Todo',
-                            name: args.result.name,
+                            name: args.result.title,
                             action: 'Delete',
                         },
                     });

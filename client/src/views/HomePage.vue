@@ -1,136 +1,259 @@
+<!-- Ada beberapa v-model, v-for, dan v v lain yg ak hilangin, buat referensi bisa pake categoryPage.vue ya, thankss -->
+
 <template>
-    <NavbarComponent />
-    <main class="mx-32 my-10 font-poppins">
-        <section class="flex">
-            <!-- Input bindings ✅ v-model: automatically update variable name to user input -->
-            <input
-                type="text"
-                placeholder="Your names"
-                v-model="name"
-                class="py-2 px-2 border-b-2 border-slate-800 mr-4 focus:outline-none text-4xl font-bold w-3/12 text-slate-800"
-            />
-            <h2 class="font-bold text-slate-800 text-4xl py-2">'s To-Do-List</h2>
-        </section>
-        <form class="flex flex-col gap-5" @submit.prevent="createCategory">
-            <h3 class="mt-12 font-semibold text-2xl">Add new categories:</h3>
-            <div class="flex gap-4">
-                <!-- Input bindings ✅ v-model: automatically update variable theNewCategory to user input -->
-                <input
-                    type="text"
-                    v-model="new_category"
-                    class="w-auto border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                />
-
-                <!-- Event handling ✅ v-on (@): calls method when button is clicked -->
-                <button
-                    type="submit"
-                    @click="addCategory"
-                    class="text-white font-medium text-lg px-12 py-2 rounded-xl bg-purple-500 hover:bg-purple-600 transition-all"
-                >
-                    Add
-                </button>
+    <section>
+        <NavbarComponent />
+        <main class="mx-32 my-10 font-poppins">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex justify-between items-center">
+                    <h1 class="font-bold text-slate-800 text-4xl py-2">To Do List</h1>
+                </div>
+                <div class="text-black font-medium text-md pt-1 text-right">
+                    {{ date }}
+                    <br />
+                    {{ time }}
+                </div>
             </div>
-        </form>
 
-        <h3 class="mt-12 mb-7 font-semibold text-2xl">Categories:</h3>
-        <section
-            class="grid grid-cols-1 gap-4 xl:grid-cols-4 xl:gap-10 lg:grid-cols-3 lg:gap-8 md:grid-cols-2 md:gap-6 transition-all"
-        >
-            <!-- List rendering ✅ v-for: render array -->
-            <div v-for="category in categories" :key="category" class="relative">
-                <!-- Emit ✅ -->
-                <CategoryCard
-                    :categories="category"
-                    @add-note="redirectToCategory(category)"
-                    @remove-category="removeCategory(category)"
-                />
-                <!-- Dynamic routing ✅ -->
-                <router-link
-                    :to="{
-                        name: 'category',
-                        params: { categoryName: category ? category.toString() : '' },
-                    }"
-                >
-                </router-link>
-            </div>
-        </section>
-    </main>
+            <section>
+                <form @submit.prevent="addTask">
+                    <h3 class="mt-2 font-semibold text-2xl mb-3">Add new task:</h3>
+                    <div class="flex gap-2 mb-2">
+                        <input
+                            type="text"
+                            placeholder="Title"
+                            disabled
+                            class="placeholder-slate-900 w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-900 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Category"
+                            disabled
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900"
+                        />
+                        <input
+                            type="text"
+                            placeholder="Status"
+                            disabled
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900"
+                        />
+                        <button class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-white">
+                            <font-awesome-icon icon="fa-solid fa-plus" />
+                        </button>
+                    </div>
+                    <div class="flex gap-2">
+                        <input
+                            type="text"
+                            placeholder="e.g. Pemweb dapet A"
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                        />
+                        <input
+                            type="text"
+                            placeholder="..."
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                        />
+                        <input
+                            type="text"
+                            placeholder="..."
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                        />
+                        <button
+                            @click="addTask"
+                            class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all"
+                        >
+                            <font-awesome-icon icon="fa-solid fa-plus" />
+                        </button>
+                    </div>
+                </form>
+            </section>
+            <section class="flex flex-col gap-4 mt-16">
+                <h2 class="font-semibold text-2xl">On-going Tasks</h2>
+                <div class="flex-row gap-96">
+                    <div class="flex items-center gap-2 mb-2">
+                        <p
+                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
+                        >
+                            <!-- {{ task.timestamp_date }} -->
+                        </p>
+                        <p
+                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
+                        >
+                            <!-- {{ task.timestamp_time }} -->
+                        </p>
+                        <input
+                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            type="text"
+                        />
+                        <input
+                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            type="text"
+                        />
+                        <input
+                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            type="text"
+                        />
+                        <button
+                            class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all"
+                        >
+                            <font-awesome-icon icon="fa-solid fa-trash" />
+                        </button>
+                    </div>
+                    <div class="font-medium text-lg text-gray-600">
+                        There's no task at the moment, santai dulu ga sih :V
+                    </div>
+                </div>
+            </section>
+
+            <section class="flex flex-col gap-5 mt-16">
+                <h2 class="font-semibold text-2xl">Completed Tasks</h2>
+                <div class="flex-row gap-3">
+                    <div class="font-medium text-lg text-gray-600">There's no completed task at the moment.</div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <p
+                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
+                        >
+                            <!-- {{ task.timestamp_date }} -->
+                        </p>
+                        <p
+                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
+                        >
+                            <!-- {{ task.timestamp_time }} -->
+                        </p>
+                        <input
+                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            type="text"
+                        />
+                        <input
+                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            type="text"
+                        />
+                        <input
+                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            type="text"
+                        />
+                        <button
+                            class="text-white text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all"
+                        >
+                            <font-awesome-icon icon="fa-solid fa-trash" />
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </section>
 </template>
 
 <script>
-import CategoryCard from '../components/CategoryCard.vue';
-import NavbarComponent from '../components/NavbarComponent.vue';
 import axios from 'axios';
+import NavbarComponent from '@/components/NavbarComponent.vue';
 
 export default {
     components: {
-        CategoryCard,
         NavbarComponent,
     },
     data() {
         return {
-            new_category: '',
-            categories: [],
+            todo: [], // initialize empty array for todo list
+            content_input: '', // initialize empty string for todo content
+            date: '', // initialize empty string for date
+            time: '', // initialize empty string for time
+            week: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            name: '', // name of the category
+            categoryName: '',
+            categoryTaskCount: 0,
         };
     },
+    computed: {
+        completedTodo() {
+            return this.todo.filter((task) => task.status === 'done' && task.category === this.categoryName);
+        },
+        unfinishedTodo() {
+            return this.todo.filter((task) => task.status === 'not started' && task.category === this.categoryName);
+        },
+        categoryTaskCount() {
+            return this.todo.filter((task) => task.category === this.categoryName).length;
+        },
+    },
     methods: {
-        addCategory() {
-            // makes sure the inputted category is not empty and haven't been made
-            if (this.theNewCategory.trim() === '' || this.categories.includes(this.theNewCategory.trim())) {
-                return;
-            }
-
-            // insert inputted category to array if it matches the requirement
-            this.categories.push(this.theNewCategory.trim());
-        },
-        removeCategory(category) {
-            // take index of the selected category
-            const index = this.categories.indexOf(category);
-            if (index !== -1) {
-                // check if category exists
-                this.categories.splice(index, 1); // remove one category
-                localStorage.setItem('categories', JSON.stringify(this.categories)); // update local storage
-            }
-        },
-        redirectToCategory(category) {
-            // dynamic routing ✅
-            this.$router.push({
-                name: 'category',
-                params: { categoryName: category },
-            });
-        },
-        async showCategories() {
-            await fetch('http://localhost:3000/api/categories')
+        // alternatif function ini bisa pake axios, jangan lupa diimport dulu tapi
+        async getAllTodos() {
+            await fetch('http://localhost:3000/api/todo')
                 .then((response) => response.json())
                 .then((data) => {
-                    this.categories = data.docs.map((category) => category.name);
-                    console.log(this.categories);
+                    this.todos = data.docs.map((todo) => todo.name);
+                    console.log(this.todos);
                 })
                 .catch((error) => {
                     console.error('An error occurred:', error);
                 });
         },
-        async createCategory() {
-            try {
-                const newCategory = {
-                    name: this.new_category, // ambil dari v-modelnya input
-                };
-
-                const response = await axios.post('http://localhost:3000/api/categories', newCategory);
-
-                console.log(response.data);
-                alert(`${newCategory.name} category added successfully!`);
-
-                this.new_category = ''; // empty input field
-                this.showCategories(); // nampilin data di konsol setelah nambah
-            } catch (error) {
-                console.log(error.message);
-                alert('An error occurred while adding a category: ' + error.message);
+        // perbaiki function yang ini
+        async addTask() {
+            if (this.content_input.trim() === '') {
+                return;
             }
+
+            const newTask = {
+                title: this.content_input,
+                publishedDate: new Date().toISOString(),
+                category: this.categoryName, // Set the category based on the route parameter
+                status: 'not started',
+            };
+
+            try {
+                const response = await fetch('http://localhost:3000/api/todo', {
+                    method: 'POST',
+                    credentials: 'include',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newTask),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+                    this.todo.push(data);
+                    this.content_input = '';
+                } else {
+                    console.error('Failed to add task:', response.statusText);
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+        },
+        updateTime() {
+            const current_date = new Date(); // built in from JS
+            this.date = // formatting the date
+                this.week[current_date.getDay()] + // according to array week
+                ', ' +
+                this.zeroPadding(current_date.getDate(), 2) +
+                ' - ' +
+                this.zeroPadding(current_date.getMonth() + 1, 2) + // since January = 0, we add 1
+                ' - ' +
+                this.zeroPadding(current_date.getFullYear(), 4) +
+                ' ';
+
+            this.time = // formatting the time
+                this.zeroPadding(current_date.getHours(), 2) +
+                ':' +
+                this.zeroPadding(current_date.getMinutes(), 2) +
+                ':' +
+                this.zeroPadding(current_date.getSeconds(), 2);
+        },
+        zeroPadding(num, digit) {
+            // formatting leading zeros
+            let zero = '';
+            for (let i = 0; i < digit; i++) {
+                zero += '0';
+            }
+            return (zero + num).slice(-digit); // ensure has requested digits
         },
     },
     mounted() {
-        this.showCategories();
+        this.updateTime();
+        this.getAllTodos();
+        setInterval(this.updateTime, 1000); // update every 1 second
     },
 };
 </script>

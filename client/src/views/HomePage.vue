@@ -130,7 +130,7 @@
               {{ task.category }}
             </p>
             <p
-              class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 bg-green-600 text-white px-3 py-2 text-center">
+              class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 bg-green-700 text-white px-3 py-2 text-center">
               {{ task.status }}
             </p>
             <button
@@ -175,16 +175,14 @@ export default {
   },
   methods: {
     editTask(task) {
-      task.editing = true; // Setel tugas ke mode pengeditan
-      task.backupTitle = task.title; // Simpan salinan judul tugas sebelum diedit
-      task.backupCategory = task.category; // Simpan salinan kategori tugas sebelum diedit
-      task.backupStatus = task.status; // Simpan salinan status tugas sebelum diedit
+      task.editing = true; 
+      task.backupTitle = task.title; 
+      task.backupCategory = task.category; 
+      task.backupStatus = task.status; 
     },
 
     saveTask(task) {
-      task.editing = false; // Keluar dari mode pengeditan
-      // Di sini Anda perlu memeriksa apakah ada perubahan pada judul, kategori, atau status tugas.
-      // Jika ada perubahan, Anda dapat memperbarui timestamp_date dan timestamp_time sesuai dengan waktu saat ini.
+      task.editing = false;
       if (
         task.title !== task.backupTitle ||
         task.category !== task.backupCategory ||
@@ -231,7 +229,7 @@ export default {
         this.zeroPadding(current_date.getSeconds(), 2);
 
       const newTask = {
-        id: this.todo.length + 1, // ID unik untuk setiap tugas
+        id: this.todo.length + 1,
         title: this.content_input,
         publishedDate: new Date().toISOString(),
         category: this.categoryName,
@@ -242,7 +240,6 @@ export default {
 
       this.todo.push(newTask);
 
-      // Jika tugas ditambahkan dan memiliki status 'not started' atau 'on progress', tambahkan ke filteredUnfinishedTodo.
       if (this.status === 'not started' || this.status === 'on progress') {
         this.filteredUnfinishedTodo.push(newTask);
       }
@@ -250,14 +247,10 @@ export default {
       this.content_input = '';
     },
     removeTask(id) {
-      // Cari tugas berdasarkan ID
       const taskIndex = this.todo.findIndex(task => task.id === id);
 
       if (taskIndex !== -1) {
-        // Hapus tugas dari todo
         this.todo.splice(taskIndex, 1);
-
-        // Hapus tugas dari filteredUnfinishedTodo jika ada
         this.filteredUnfinishedTodo = this.filteredUnfinishedTodo.filter(task => task.id !== id);
       }
     },
@@ -289,7 +282,6 @@ export default {
   },
   mounted() {
     this.updateTime();
-    // setInterval(this.updateTime, 1000);
   },
 };
 </script>

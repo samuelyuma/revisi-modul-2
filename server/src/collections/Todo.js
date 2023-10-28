@@ -41,16 +41,12 @@ const Todo = {
             type: 'select',
             options: [
                 {
-                    value: 'not started',
-                    label: 'Not Started',
-                },
-                {
                     value: 'on progress',
                     label: 'On Progress',
                 },
                 {
-                    value: 'done',
-                    label: 'Done',
+                    value: 'completed',
+                    label: 'Completed',
                 },
             ],
             defaultValue: 'not started',
@@ -71,33 +67,25 @@ const Todo = {
                             action: 'Created',
                         },
                     });
-                }
-            },
-        ],
-        afterChange: [
-            async (args) => {
-                if (args.operation == 'update') {
+                } else if (args.operation == 'updateByID') {
                     payload.create({
                         collection: 'changelog',
                         data: {
                             type: 'Todo',
-                            name: args.doc.title,
-                            action: 'Updated',
+                            name: args.result.title,
+                            action: 'Update',
+                        },
+                    });
+                } else if (args.operation == 'deleteByID') {
+                    payload.create({
+                        collection: 'changelog',
+                        data: {
+                            type: 'Todo',
+                            name: args.result.title,
+                            action: 'Delete',
                         },
                     });
                 }
-            },
-        ],
-        afterDelete: [
-            async (args) => {
-                payload.create({
-                    collection: 'changelog',
-                    data: {
-                        type: 'Todo',
-                        name: args.doc.title,
-                        action: 'Deleted.',
-                    },
-                });
             },
         ],
     },

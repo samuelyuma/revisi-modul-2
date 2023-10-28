@@ -52,15 +52,15 @@
         <div class="flex-row gap-96">
           <div class="flex items-center gap-2 mb-2" v-for="task in filteredUnfinishedTodo" :key="task.id">
             <p
-              class="w-3/2 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+              class="w-3/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
               {{ task.timestamp_date }}
             </p>
             <p
               class="w-3/2 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
               {{ task.timestamp_time }}
             </p>
-            <div v-if="!task.editing">
-              <div class="w-full flex ">
+            <div v-if="!task.editing" class="w-full">
+              <div class="w-full flex gap-2 ">
                 <p
                   class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                   {{ task.title }}
@@ -84,19 +84,21 @@
                 <input
                   class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
                   type="text" v-model="task.title" />
-                <input
-                  class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                  type="text" v-model="task.category" />
+                <select v-model="task.category"
+                  class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400">
+                  <option value="pendidikan">Pendidikan</option>
+                  <option value="kesehatan">Kesehatan</option>
+                </select>
               </div>
             </div>
             <button
               class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all"
-              @click="removeTask(filteredUnfinishedTodo.indexOf(task))">
+              @click="removeTask(task.id)">
               <font-awesome-icon icon="fa-solid fa-trash" />
             </button>
             <button
               class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-blue-500 hover:bg-blue-600 transition-all"
-              @click="task.editing = !task.editing">
+              @click="task.editing ? saveTask(task) : editTask(task)">
               {{ task.editing ? "Save" : "Edit" }}
             </button>
           </div>
@@ -119,16 +121,21 @@
               class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
               {{ task.timestamp_time }}
             </p>
-            <input
-              class="w-3/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-              type="text" v-model="task.title" />
-            <input
-              class="w-3/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-              type="text" v-model="task.category" />
-            <input
-              class="w-3/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-              type="text" v-model="task.status" />
-            <button class="text-white text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
+            <p
+              class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+              {{ task.title }}
+            </p>
+            <p
+              class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+              {{ task.category }}
+            </p>
+            <p
+              class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 bg-green-600 text-white px-3 py-2 text-center">
+              {{ task.status }}
+            </p>
+            <button
+              class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all"
+              @click="removeTask(task.id)">
               <font-awesome-icon icon="fa-solid fa-trash" />
             </button>
           </div>
@@ -159,11 +166,48 @@ export default {
     };
   },
   computed: {
+    filteredUnfinishedTodo() {
+      return this.todo.filter((task) => task.status !== 'completed');
+    },
     completedTodo() {
       return this.todo.filter((task) => task.status === 'completed');
     },
   },
   methods: {
+    editTask(task) {
+      task.editing = true; // Setel tugas ke mode pengeditan
+      task.backupTitle = task.title; // Simpan salinan judul tugas sebelum diedit
+      task.backupCategory = task.category; // Simpan salinan kategori tugas sebelum diedit
+      task.backupStatus = task.status; // Simpan salinan status tugas sebelum diedit
+    },
+
+    saveTask(task) {
+      task.editing = false; // Keluar dari mode pengeditan
+      // Di sini Anda perlu memeriksa apakah ada perubahan pada judul, kategori, atau status tugas.
+      // Jika ada perubahan, Anda dapat memperbarui timestamp_date dan timestamp_time sesuai dengan waktu saat ini.
+      if (
+        task.title !== task.backupTitle ||
+        task.category !== task.backupCategory ||
+        task.status !== task.backupStatus
+      ) {
+        const current_date = new Date();
+        task.timestamp_date =
+          this.week[current_date.getDay()] +
+          ', ' +
+          this.zeroPadding(current_date.getDate(), 2) +
+          ' - ' +
+          this.zeroPadding(current_date.getMonth() + 1, 2) +
+          ' - ' +
+          this.zeroPadding(current_date.getFullYear(), 4);
+        task.timestamp_time =
+          this.zeroPadding(current_date.getHours(), 2) +
+          ':' +
+          this.zeroPadding(current_date.getMinutes(), 2) +
+          ':' +
+          this.zeroPadding(current_date.getSeconds(), 2);
+      }
+    },
+
     async addTask() {
       if (this.content_input.trim() === '') {
         return;
@@ -187,10 +231,11 @@ export default {
         this.zeroPadding(current_date.getSeconds(), 2);
 
       const newTask = {
+        id: this.todo.length + 1, // ID unik untuk setiap tugas
         title: this.content_input,
         publishedDate: new Date().toISOString(),
-        category: this.categoryName, // Menggunakan nilai dari category
-        status: this.status, // Menggunakan nilai dari status
+        category: this.categoryName,
+        status: this.status,
         timestamp_date: timestamp_date,
         timestamp_time: timestamp_time,
       };
@@ -204,10 +249,17 @@ export default {
 
       this.content_input = '';
     },
-    removeTask(index) {
-      // Hapus tugas dari todo dan filteredUnfinishedTodo
-      this.todo.splice(index, 1);
-      this.filteredUnfinishedTodo = this.filteredUnfinishedTodo.filter((task, i) => i !== index);
+    removeTask(id) {
+      // Cari tugas berdasarkan ID
+      const taskIndex = this.todo.findIndex(task => task.id === id);
+
+      if (taskIndex !== -1) {
+        // Hapus tugas dari todo
+        this.todo.splice(taskIndex, 1);
+
+        // Hapus tugas dari filteredUnfinishedTodo jika ada
+        this.filteredUnfinishedTodo = this.filteredUnfinishedTodo.filter(task => task.id !== id);
+      }
     },
     updateTime() {
       const current_date = new Date();

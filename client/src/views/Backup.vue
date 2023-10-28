@@ -309,14 +309,15 @@ export default {
         };
     },
     computed: {
-        // filteredUnfinishedTodo() {
-        //     return this.todo.filter((task) => task.status !== 'completed');
-        // },
         completedTodo() {
-            return this.todo.filter((task) => task.status === 'done' && task.category === this.categoryName);
+            return this.filteredUnfinishedTodo.filter(
+                (task) => task.status === 'done' && task.category === this.categoryName
+            );
         },
         unfinishedTodo() {
-            return this.todo.filter((task) => task.status === 'not started' && task.category === this.categoryName);
+            return this.filteredUnfinishedTodo.filter(
+                (task) => task.status === 'not started' && task.category === this.categoryName
+            );
         },
     },
     methods: {

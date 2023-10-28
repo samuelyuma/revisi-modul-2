@@ -60,7 +60,7 @@ const Todo = {
             async (args) => {
                 if (args.operation == 'create') {
                     payload.create({
-                        collection: 'changelog',
+                        collection: 'log',
                         data: {
                             type: 'Todo',
                             name: args.result.title,
@@ -69,7 +69,7 @@ const Todo = {
                     });
                 } else if (args.operation == 'updateByID') {
                     payload.create({
-                        collection: 'changelog',
+                        collection: 'log',
                         data: {
                             type: 'Todo',
                             name: args.result.title,
@@ -78,7 +78,7 @@ const Todo = {
                     });
                 } else if (args.operation == 'deleteByID') {
                     payload.create({
-                        collection: 'changelog',
+                        collection: 'log',
                         data: {
                             type: 'Todo',
                             name: args.result.title,

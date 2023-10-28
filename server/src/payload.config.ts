@@ -7,7 +7,7 @@ import { slateEditor } from '@payloadcms/richtext-slate';
 import { buildConfig } from 'payload/config';
 
 import Users from './collections/Users';
-import Changelog from './collections/Changelog';
+import Log from './collections/Log';
 import Categories from './collections/Categories';
 import Todo from './collections/Todo';
 
@@ -18,7 +18,7 @@ export default buildConfig({
         bundler: webpackBundler(),
     },
     editor: slateEditor({}),
-    collections: [Users, Categories, Todo, Changelog],
+    collections: [Users, Categories, Todo, Log],
     typescript: {
         outputFile: path.resolve(__dirname, 'payload-types.ts'),
     },

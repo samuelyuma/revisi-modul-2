@@ -25,7 +25,7 @@ const Categories = {
             async (args) => {
                 if (args.operation == 'create') {
                     payload.create({
-                        collection: 'changelog',
+                        collection: 'log',
                         data: {
                             type: 'Category',
                             name: args.result.name,
@@ -34,7 +34,7 @@ const Categories = {
                     });
                 } else if (args.operation == 'updateByID') {
                     payload.create({
-                        collection: 'changelog',
+                        collection: 'log',
                         data: {
                             type: 'Category',
                             name: args.result.name,
@@ -43,7 +43,7 @@ const Categories = {
                     });
                 } else if (args.operation == 'deleteByID') {
                     payload.create({
-                        collection: 'changelog',
+                        collection: 'log',
                         data: {
                             type: 'Category',
                             name: args.result.name,

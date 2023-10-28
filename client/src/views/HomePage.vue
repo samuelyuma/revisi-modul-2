@@ -142,6 +142,7 @@
                         </div>
 
                         <button
+                            type="submit"
                             @click="addTask"
                             class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all"
                         >
@@ -305,7 +306,7 @@ export default {
             content_input: '',
             categoryName: 'pendidikan',
             status: 'not started',
-            filteredUnfinishedTodo: [], // Initialize an empty array for filtered unfinished tasks
+            // filteredUnfinishedTodo: [], // Initialize an empty array for filtered unfinished tasks
         };
     },
     computed: {
@@ -318,42 +319,21 @@ export default {
         unfinishedTodo() {
             return this.todo.filter((task) => task.status === 'not started' && task.category === this.categoryName);
         },
-        categoryTaskCount() {
-            return this.todo.filter((task) => task.category === this.categoryName).length;
-        },
+        // categoryTaskCount() {
+        //     return this.todo.filter((task) => task.category === this.categoryName).length;
+        // },
+        // completedTodo() {
+        //     return this.filteredUnfinishedTodo.filter(
+        //         (task) => task.status === 'done' && task.category === this.categoryName
+        //     );
+        // },
+        // unfinishedTodo() {
+        //     return this.filteredUnfinishedTodo.filter(
+        //         (task) => task.status === 'not started' && task.category === this.categoryName
+        //     );
+        // },
     },
     methods: {
-        async fetchDataFromBackend() {
-            try {
-                const todoList = await api.getTodoList();
-                this.todo = todoList;
-            } catch (error) {
-                console.error('Failed to fetch todo list:', error);
-            }
-        },
-
-        setCategory(category) {
-            this.selectedCategory = category;
-            this.isCategoryOptionsExpanded = false;
-        },
-
-        setStatus(status) {
-            this.selectedStatus = status;
-            this.isStatusOptionsExpanded = false;
-        },
-
-        async getCategory() {
-            await fetch('http://localhost:3000/api/categories')
-                .then((response) => response.json())
-                .then((data) => {
-                    this.categoryOptions = data.docs.map((category) => category.name);
-                    console.log(this.category);
-                })
-                .catch((error) => {
-                    console.error('An error occurred:', error);
-                });
-        },
-
         // JGN HAPUSSS
         // async getStatus() {
         //     await fetch('http://localhost:3000/api/todo')
@@ -366,6 +346,28 @@ export default {
         //             console.error('An error occurred:', error);
         //         });
         // },
+
+        setCategory(category) {
+            this.selectedCategory = category;
+            this.isCategoryOptionsExpanded = false;
+        },
+
+        setStatus(status) {
+            this.selectedStatus = status;
+            this.isStatusOptionsExpanded = false;
+        },
+
+        async getAllCategories() {
+            await fetch('http://localhost:3000/api/categories')
+                .then((response) => response.json())
+                .then((data) => {
+                    this.categoryOptions = data.docs.map((category) => category.name);
+                    console.log(this.categoryOptions);
+                })
+                .catch((error) => {
+                    console.error('An error occurred:', error);
+                });
+        },
 
         async getAllTodos() {
             await fetch('http://localhost:3000/api/todo')
@@ -529,9 +531,9 @@ export default {
     mounted() {
         this.updateTime();
         this.getAllTodos();
-        this.getCategory();
         // this.getStatus();
-        this.fetchDataFromBackend();
+        this.getAllCategories();
+        // this.fetchDataFromBackend();
         setInterval(this.updateTime, 1000); // update every 1 second
     },
 };

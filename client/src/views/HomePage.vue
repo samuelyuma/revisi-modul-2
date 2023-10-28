@@ -19,48 +19,89 @@
                 <form @submit.prevent="addTask">
                     <h3 class="mt-2 font-semibold text-2xl mb-3">Add new task:</h3>
                     <div class="flex gap-2 mb-2">
-                        <input
-                            type="text"
-                            placeholder="Title"
-                            disabled
-                            class="placeholder-slate-900 w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-900 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Category"
-                            disabled
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Status"
-                            disabled
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900"
-                        />
+                        <input type="text" placeholder="Title" disabled
+                            class="placeholder-slate-900 w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-900 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center" />
+                        <input type="text" placeholder="Category" disabled
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900" />
+                        <input type="text" placeholder="Status" disabled
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900" />
                         <button class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-white">
                             <font-awesome-icon icon="fa-solid fa-plus" />
                         </button>
                     </div>
                     <div class="flex gap-2">
-                        <input
-                            type="text"
-                            placeholder="e.g. Pemweb dapet A"
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                        />
-                        <input
-                            type="text"
-                            placeholder="..."
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                        />
-                        <input
-                            type="text"
-                            placeholder="..."
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                        />
-                        <button
-                            @click="addTask"
-                            class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all"
-                        >
+                        <input type="text" placeholder="e.g. Pemweb dapet A"
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400" />
+                        <!-- <input type="text" placeholder="category dropdown here"
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400" /> -->
+
+                        <!-- dropdown category selction -->
+                        <div class="relative w-full">
+                            <button
+                                class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-left relative"
+                                @click="isCategoryOptionsExpanded = !isCategoryOptionsExpanded"
+                                @blur="isCategoryOptionsExpanded = false">
+                                {{ selectedCategory }}
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    class="h-4 w-4 absolute right-3 top-1/2 transform -translate-y-1/2 transition-transform duration-200 ease-in-out"
+                                    :class="isCategoryOptionsExpanded ? 'rotate-180' : 'rotate-0'">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <transition enter-active-class="transform transition duration-500 ease-custom"
+                                enter-class="-translate-y-1/2 scale-y-0 opacity-0"
+                                enter-to-class="translate-y-0 scale-y-100 opacity-100"
+                                leave-active-class="transform transition duration-300 ease-custom"
+                                leave-class="translate-y-0 scale-y-100 opacity-100"
+                                leave-to-class="-translate-y-1/2 scale-y-0 opacity-0">
+                                <ul v-show="isCategoryOptionsExpanded"
+                                    class="absolute left-0 right-0 mt-2 bg-white border border-slate-400 rounded-lg shadow-lg overflow-hidden">
+                                    <li v-for="(category, index) in categoryOptions" :key="index"
+                                        class="px-3 py-2 transition-colors duration-300 hover:bg-gray-200 cursor-pointer"
+                                        @mousedown.prevent="setCategory(category)">
+                                        {{ category }}
+                                    </li>
+                                </ul>
+                            </transition>
+                        </div>
+
+                        <!-- <input type="text" placeholder="status dropdown here"
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400" /> -->
+
+                        <!-- dropdown status selction -->
+                        <div class="relative w-full">
+                            <button
+                                class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-left relative"
+                                @click="isStatusOptionsExpanded = !isStatusOptionsExpanded"
+                                @blur="isStatusOptionsExpanded = false">
+                                {{ selectedStatus }}
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    class="h-4 w-4 absolute right-3 top-1/2 transform -translate-y-1/2 transition-transform duration-200 ease-in-out"
+                                    :class="isStatusOptionsExpanded ? 'rotate-180' : 'rotate-0'">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <transition enter-active-class="transform transition duration-500 ease-custom"
+                                enter-class="-translate-y-1/2 scale-y-0 opacity-0"
+                                enter-to-class="translate-y-0 scale-y-100 opacity-100"
+                                leave-active-class="transform transition duration-300 ease-custom"
+                                leave-class="translate-y-0 scale-y-100 opacity-100"
+                                leave-to-class="-translate-y-1/2 scale-y-0 opacity-0">
+                                <ul v-show="isStatusOptionsExpanded"
+                                    class="absolute left-0 right-0 mt-2 bg-white border border-slate-400 rounded-lg shadow-lg overflow-hidden">
+                                    <li v-for="(status, index) in statusOptions" :key="index"
+                                        class="px-3 py-2 transition-colors duration-300 hover:bg-gray-200 cursor-pointer"
+                                        @mousedown.prevent="setStatus(status)">
+                                        {{ status }}
+                                    </li>
+                                </ul>
+                            </transition>
+                        </div>
+
+                        <button @click="addTask"
+                            class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-plus" />
                         </button>
                     </div>
@@ -71,30 +112,24 @@
                 <div class="flex-row gap-96">
                     <div class="flex items-center gap-2 mb-2">
                         <p
-                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
+                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             <!-- {{ task.timestamp_date }} -->
                         </p>
                         <p
-                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
+                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             <!-- {{ task.timestamp_time }} -->
                         </p>
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <button
-                            class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all"
-                        >
+                            class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </button>
                     </div>
@@ -110,30 +145,24 @@
                     <div class="font-medium text-lg text-gray-600">There's no completed task at the moment.</div>
                     <div class="flex items-center gap-2 mb-2">
                         <p
-                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
+                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             <!-- {{ task.timestamp_date }} -->
                         </p>
                         <p
-                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
+                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             <!-- {{ task.timestamp_time }} -->
                         </p>
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <button
-                            class="text-white text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all"
-                        >
+                            class="text-white text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </button>
                     </div>
@@ -145,6 +174,8 @@
 
 <script>
 import axios from 'axios';
+// import { mixin as clickaway } from 'vue-clickaway';
+
 import NavbarComponent from '@/components/NavbarComponent.vue';
 
 export default {
@@ -159,8 +190,13 @@ export default {
             time: '', // initialize empty string for time
             week: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             name: '', // name of the category
-            categoryName: '',
+            selectedCategory: 'Daily',
+            categoryOptions: [],
+            isCategoryOptionsExpanded: false, // flag for dropdowm
             categoryTaskCount: 0,
+            selectedStatus: 'Not Started',
+            isStatusOptionsExpanded: false,
+            statusOptions: ['Not started', 'On progress', 'Completed'],
         };
     },
     computed: {
@@ -175,7 +211,41 @@ export default {
         },
     },
     methods: {
-        // alternatif function ini bisa pake axios, jangan lupa diimport dulu tapi
+        setCategory(category) {
+            this.selectedCategory = category;
+            this.isCategoryOptionsExpanded = false;
+        },
+
+        setStatus(status) {
+            this.selectedStatus = status;
+            this.isStatusOptionsExpanded = false;
+        },
+
+        async getCategory() {
+            await fetch('http://localhost:3000/api/categories')
+                .then((response) => response.json())
+                .then((data) => {
+                    this.categoryOptions = data.docs.map((category) => category.name);
+                    console.log(this.category);
+                })
+                .catch((error) => {
+                    console.error('An error occurred:', error);
+                });
+        },
+
+        // JGN HAPUSSS
+        // async getStatus() {
+        //     await fetch('http://localhost:3000/api/todo')
+        //         .then((response) => response.json())
+        //         .then((data) => {
+        //             this.statusOptions = data.docs.map((todo) => todo.status);
+        //             console.log(this.todo);
+        //         })
+        //         .catch((error) => {
+        //             console.error('An error occurred:', error);
+        //         });
+        // },
+
         async getAllTodos() {
             await fetch('http://localhost:3000/api/todo')
                 .then((response) => response.json())
@@ -252,6 +322,8 @@ export default {
     mounted() {
         this.updateTime();
         this.getAllTodos();
+        this.getCategory();
+        // this.getStatus();
         setInterval(this.updateTime, 1000); // update every 1 second
     },
 };

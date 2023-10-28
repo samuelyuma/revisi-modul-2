@@ -37,7 +37,7 @@
       <div class="flex-row gap-96">
         <!-- List rendering ✅ v-for: render array -->
         <div v-for="task in unfinishedTodo" :key="task.title"
-          :class="`todo-item ${task.status === 'not started'}`" class="flex items-center gap-2 mb-2">
+          :class="`todo-item ${task.status === 'not started'}`" class="Hflex items-center gap-2 mb-2">
 
           <!-- Render task details as before -->
           <p
@@ -186,7 +186,6 @@ export default {
         console.error('An error occurred:', error);
       }
     },
-
     removeToDo(task) {
       fetch(`http://localhost:3000/api/todo/${task.id}`, {
         method: 'DELETE',

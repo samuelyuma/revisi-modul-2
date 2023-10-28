@@ -6,7 +6,7 @@
       <!-- Routing ✅ -->
       <router-link to="/"><button
           class="text-white font-medium text-md px-6 py-3 rounded-xl bg-blue-500 hover:bg-blue-600 transition-all">
-          Back to home
+          Back to home yeah
         </button></router-link>
     </div>
     <div class="text-black font-medium text-md pt-1">
@@ -67,7 +67,7 @@
 
         <!-- Conditional rendering ✅ v-if: only render if there's no task to do -->
         <div v-if="unfinishedTodo.length === 0" class="font-medium text-lg text-gray-600">
-          There's no task at the moment, santai dulu ga sih :V
+          santai dulu ga sih :V
         </div>
       </div>
     </section>
@@ -78,7 +78,7 @@
 
         <!-- Conditional rendering ✅ v-if: only render if there's no completed task -->
         <div v-if="completedTodo.length === 0" class="font-medium text-lg text-gray-600">
-          There's no completed task at the moment.
+          belum ada kak
         </div>
         <div v-for="task in completedTodo" :key="task.title"
           :class="`todo-item ${task.status === 'done'}`" class="flex items-center gap-2 mb-2">
@@ -166,7 +166,7 @@ export default {
       };
 
       try {
-        const response = await fetch('http://localhost:3000/api/todo', {
+        const response = await fetch('http://localhost:3000/api/todo/AddNotes', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

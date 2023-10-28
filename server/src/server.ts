@@ -56,7 +56,7 @@ app.post("/api/todo/AddNotes", multer().none(), (request, response) => {
   const title = request.body.title;
   const category = request.body.category;
   const status = request.body.status;
-  const currentTimestamp = new Date(); // Waktu saat ini
+  const currentTimestamp = new Date();
   const current_date = new Date();
 
   database.collection("todos").count({}, function (error, index) {

@@ -52,7 +52,7 @@
         <div class="flex-row gap-96">
           <div class="flex items-center gap-2 mb-2" v-for="task in filteredUnfinishedTodo" :key="task.id">
             <p
-              class="w-3/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+              class="w-1/2 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
               {{ task.timestamp_date }}
             </p>
             <p
@@ -71,12 +71,13 @@
                 </p>
                 <p
                   class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
-                  <select v-model="task.status">
-                    <option value="not started">Not Started</option>
-                    <option value="on progress">On Progress</option>
-                    <option value="completed">Completed</option>
-                  </select>
+                  {{ task.status }}
                 </p>
+                <button
+                  class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all"
+                  @click="tandaiSebagaiSelesai(task)">
+                  <font-awesome-icon icon="fa-solid fa-check" />
+                </button>
               </div>
             </div>
             <div v-else>
@@ -89,6 +90,13 @@
                   <option value="pendidikan">Pendidikan</option>
                   <option value="kesehatan">Kesehatan</option>
                 </select>
+                <p
+                  class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+                  <select v-model="task.status">
+                    <option value="not started">Not Started</option>
+                    <option value="on progress">On Progress</option>
+                  </select>
+                </p>
               </div>
             </div>
             <button
@@ -130,7 +138,7 @@
               {{ task.category }}
             </p>
             <p
-              class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 bg-green-700 text-white px-3 py-2 text-center">
+              class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all">
               {{ task.status }}
             </p>
             <button
@@ -200,13 +208,6 @@ export default {
         if (response) {
           const current_date = new Date();
           const timestamp_date = current_date.toDateString()
-          // this.week[current_date.getDay()] +
-          // ", " +
-          // this.zeroPadding(current_date.getDate(), 2) +
-          // " - " +
-          // this.zeroPadding(current_date.getMonth() + 1, 2) +
-          // " - " +
-          // this.zeroPadding(current_date.getFullYear(), 4);
 
           const timestamp_time =
             this.zeroPadding(current_date.getHours(), 2) +
@@ -230,6 +231,7 @@ export default {
           }
 
           this.content_input = "";
+          window.location.reload();
         }
       } catch (error) {
         console.error("Failed to add task:", error);
@@ -244,6 +246,7 @@ export default {
           this.todo.splice(taskIndex, 1);
           this.filteredUnfinishedTodo = this.filteredUnfinishedTodo.filter((task) => task.id !== id);
         }
+        window.location.reload();
       } catch (error) {
         console.error('Failed to remove task:', error);
       }
@@ -251,12 +254,13 @@ export default {
 
     async removeCompletedTask(taskId) {
       try {
-        await api.deleteTask(taskId); // Send a request to delete the task from the server
+        await api.deleteTask(taskId);
         const taskIndex = this.completedTodo.findIndex((task) => task.id === taskId);
 
         if (taskIndex !== -1) {
           this.completedTodo.splice(taskIndex, 1);
         }
+        window.location.reload();
       } catch (error) {
         console.error('Failed to remove completed task:', error);
       }
@@ -274,31 +278,37 @@ export default {
       task.editing = false;
       try {
         const updatedData = {
-          title: task.title, // Sesuaikan dengan field yang diperbarui pada server
-          category: task.category, // Sesuaikan dengan field yang diperbarui pada server
-          status: task.status, // Sesuaikan dengan field yang diperbarui pada server
+          title: task.title,
+          category: task.category,
+          status: task.status,
         };
 
-        await api.updateTask(task._id, updatedData); // Gunakan _id untuk mengidentifikasi catatan yang akan diperbarui
+        await api.updateTask(task._id, updatedData);
 
         const current_date = new Date();
-        task.timestamp_date = current_date.toDateString()
-        // this.week[current_date.getDay()] +
-        // ', ' +
-        // this.zeroPadding(current_date.getDate(), 2) +
-        // ' - ' +
-        // this.zeroPadding(current_date.getMonth() + 1, 2) +
-        // ' - ' +
-        // this.zeroPadding(current_date.getFullYear(), 4);
+        task.timestamp_date = current_date.toDateString();
         task.timestamp_time =
           this.zeroPadding(current_date.getHours(), 2) +
           ':' +
           this.zeroPadding(current_date.getMinutes(), 2) +
           ':' +
           this.zeroPadding(current_date.getSeconds(), 2);
-
       } catch (error) {
-        console.error('Failed to save task:', error);
+        console.error('Gagal menyimpan tugas:', error);
+      }
+    },
+
+    async tandaiSebagaiSelesai(task) {
+      try {
+        task.status = 'completed';
+        await api.updateTask(task._id, {
+          title: task.title,
+          category: task.category,
+          status: task.status,
+          status: 'completed'
+        });
+      } catch (error) {
+        console.error('Gagal menandai tugas sebagai selesai:', error);
       }
     },
 

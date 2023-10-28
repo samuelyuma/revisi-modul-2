@@ -47,7 +47,7 @@
                         <!-- dropdown category selction -->
                         <div class="relative w-full">
                             <button
-                                class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-left relative"
+                                class="w-full active:border-2 focus:border-slate-400 border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-left relative"
                                 @click="isCategoryOptionsExpanded = !isCategoryOptionsExpanded"
                                 @blur="isCategoryOptionsExpanded = false"
                             >
@@ -305,21 +305,18 @@ export default {
             content_input: '',
             categoryName: 'pendidikan',
             status: 'not started',
-            filteredUnfinishedTodo: [], // Initialize an empty array for filtered unfinished tasks
+            // filteredUnfinishedTodo: [], // Initialize an empty array for filtered unfinished tasks
         };
     },
     computed: {
-        filteredUnfinishedTodo() {
-            return this.todo.filter((task) => task.status !== 'completed');
-        },
+        // filteredUnfinishedTodo() {
+        //     return this.todo.filter((task) => task.status !== 'completed');
+        // },
         completedTodo() {
             return this.todo.filter((task) => task.status === 'done' && task.category === this.categoryName);
         },
         unfinishedTodo() {
             return this.todo.filter((task) => task.status === 'not started' && task.category === this.categoryName);
-        },
-        categoryTaskCount() {
-            return this.todo.filter((task) => task.category === this.categoryName).length;
         },
     },
     methods: {
@@ -347,7 +344,7 @@ export default {
                 .then((response) => response.json())
                 .then((data) => {
                     this.categoryOptions = data.docs.map((category) => category.name);
-                    console.log(this.category);
+                    console.log(this.categoryOptions);
                 })
                 .catch((error) => {
                     console.error('An error occurred:', error);

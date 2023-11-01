@@ -19,17 +19,17 @@ const Todo = {
             type: 'text',
             required: true,
         },
-        {
-            name: 'publishedDate',
-            type: 'date',
-            label: 'Published Date',
-            admin: {
-                date: {
-                    pickerAppearance: 'dayAndTime',
-                    displayFormat: 'd MMM yyy h:mm:ss a',
-                },
-            },
-        },
+        // {
+        //     name: 'publishedDate',
+        //     type: 'date',
+        //     label: 'Published Date',
+        //     admin: {
+        //         date: {
+        //             pickerAppearance: 'dayAndTime',
+        //             displayFormat: 'd MMM yyy h:mm:ss a',
+        //         },
+        //     },
+        // },
         {
             name: 'category',
             type: 'relationship',
@@ -48,6 +48,10 @@ const Todo = {
                     value: 'completed',
                     label: 'Completed',
                 },
+                {
+                    value: 'not started',
+                    label: 'Not Started',
+                }
             ],
             defaultValue: 'not started',
             admin: {

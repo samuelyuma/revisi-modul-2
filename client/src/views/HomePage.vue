@@ -1,5 +1,3 @@
-<!-- Klo bingung soal v-model bisa ke CategoryPage.vue aja, file aslinya dari situ (file ini hasil rombak file CategoryPage.vue) -->
-
 <template>
     <section>
         <NavbarComponent />
@@ -15,76 +13,21 @@
                 </div>
             </div>
 
-            <section>
-                <!-- Event handling ✅ v-on (@submit.prevent): prevent reload -->
-                <form @submit.prevent="addTask">
+            <!-- <section> -->
+            <!-- Event handling ✅ v-on (@submit.prevent): prevent reload -->
+            <!-- <form @submit.prevent="addTask">
                     <h3 class="mt-12 font-semibold text-2xl mb-3">Add new task:</h3>
-                    <div class="flex gap-2">
-                        <!-- Input bindings ✅ v-model: automatically update variable content_input to user input -->
-                        <input
+                    <div class="flex gap-2"> -->
+            <!-- Input bindings ✅ v-model: automatically update variable content_input to user input -->
+            <!-- <input
                             type="text"
                             v-model="content_input"
                             placeholder="e.g. pemweb dapet A"
                             class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                        />
+                        /> -->
 
-                        <!-- Event handling ✅ v-on (@): calls method when button is clicked -->
-                        <button
-                            @click="addTask"
-                            class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all"
-                        >
-                            <font-awesome-icon icon="fa-solid fa-plus" />
-                        </button>
-                    </div>
-                </form>
-            </section>
-
-            <!-- <section>
-                <form @submit.prevent="addTask">
-                    <h3 class="mt-2 font-semibold text-2xl mb-3">Add new task:</h3>
-                    <div class="flex gap-2 mb-2">
-                        <input
-                            type="text"
-                            placeholder="Title"
-                            disabled
-                            class="placeholder-slate-900 w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-900 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Category"
-                            disabled
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900"
-                        />
-                        <input
-                            type="text"
-                            placeholder="Status"
-                            disabled
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900"
-                        />
-                        <button class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-white">
-                            <font-awesome-icon icon="fa-solid fa-plus" />
-                        </button>
-                    </div>
-                    <div class="flex gap-2">
-                        <input
-                            type="text"
-                            v-model="content_input"
-                            placeholder="e.g. Pemweb dapet A"
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                        />
-                        <input
-                            type="text"
-                            placeholder="..."
-                            disabled
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                        />
-                        <input
-                            type="text"
-                            placeholder="..."
-                            disabled
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                        />
-                        <button
+            <!-- Event handling ✅ v-on (@): calls method when button is clicked -->
+            <!-- <button
                             @click="addTask"
                             class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all"
                         >
@@ -93,44 +36,107 @@
                     </div>
                 </form>
             </section> -->
+
+            <section>
+                <form>
+                    <h3 class="mt-2 font-semibold text-2xl mb-3">Add new task:</h3>
+                    <div class="flex gap-2 mb-2">
+                        <input type="text" placeholder="Title"
+                            class="placeholder-slate-900 w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-900 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center" />
+
+                        <input type="text" placeholder="Category" disabled
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900" />
+
+                        <!-- <input
+                            type="text"
+                            placeholder="Status"
+                            disabled
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900"
+                        /> -->
+                        <button class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-white">
+                            <font-awesome-icon icon="fa-solid fa-plus" />
+                        </button>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" v-model="content_input" placeholder="e.g. Pemweb dapet A"
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400" />
+
+                        <!-- dropdown category selction -->
+                        <div class="relative w-full">
+                            <button
+                                class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-left relative"
+                                @click="isCategoryOptionsExpanded = !isCategoryOptionsExpanded"
+                                @blur="isCategoryOptionsExpanded = false">
+                                {{ selectedCategory.name }}
+                                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                                    class="h-4 w-4 absolute right-3 top-1/2 transform -translate-y-1/2 transition-transform duration-200 ease-in-out"
+                                    :class="isCategoryOptionsExpanded ? 'rotate-180' : 'rotate-0'">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <transition enter-active-class="transform transition duration-500 ease-custom"
+                                enter-class="-translate-y-1/2 scale-y-0 opacity-0"
+                                enter-to-class="translate-y-0 scale-y-100 opacity-100"
+                                leave-active-class="transform transition duration-300 ease-custom"
+                                leave-class="translate-y-0 scale-y-100 opacity-100"
+                                leave-to-class="-translate-y-1/2 scale-y-0 opacity-0">
+                                <ul v-show="isCategoryOptionsExpanded"
+                                    class="absolute left-0 right-0 mt-2 bg-white border border-slate-400 rounded-lg shadow-lg overflow-hidden">
+                                    <li v-for="(category, index) in categories" :key="index"
+                                        class="px-3 py-2 transition-colors duration-300 hover:bg-gray-200 cursor-pointer"
+                                        @mousedown.prevent="setCategory(category)">
+                                        {{ category.name }}
+                                    </li>
+                                </ul>
+                            </transition>
+                        </div>
+
+                        <!-- <input
+                            type="text"
+                            placeholder="Not started"
+                            disabled
+                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                        /> -->
+                        <button type="button" @click="addTask"
+                            class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all">
+                            <font-awesome-icon icon="fa-solid fa-plus" />
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+
             <section class="flex flex-col gap-4 mt-16">
                 <h2 class="font-semibold text-2xl">Not-started Tasks</h2>
                 <div class="flex-row gap-96">
-                    <div v-if="unfinishedTodo.length === 0" class="font-medium text-lg text-gray-600">
+                    <div v-if="unfinished_todo.length === 0" class="font-medium text-lg text-gray-600">
                         There's no task at the moment, santai dulu ga sih :V
                     </div>
-                    <div
-                        v-for="task in unfinishedTodo"
-                        :key="task.title"
-                        :class="`todo-item ${task.status === 'not started'}`"
-                        class="flex items-center gap-2 mb-2"
-                    >
-                        <p
-                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
-                            <!-- {{ task.timestamp_date }} -->
+
+                    <div v-for="task in unfinished_todo" :key="task.id" :class="`todo-item ${task.status === 'not started'}`"
+                        class="flex items-center gap-2 mb-2">
+
+                        <!-- <p
+                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+                            {{ task.timestamp_date }}
                         </p>
                         <p
-                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
-                            <!-- {{ task.timestamp_time }} -->
+                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+                            {{ task.timestamp_time }}
+                        </p> -->
+
+                        <input
+                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            type="text" v-model="task.title" />
+
+                        <p
+                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+                            {{ task.category }}
                         </p>
-                        <input
-                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
-                        <input
-                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
-                        <input
-                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
-                        <button
-                            @click="removeToDo(task)"
-                            class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all"
-                        >
+
+                        <button @click="removeToDo(task)"
+                            class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </button>
                     </div>
@@ -143,38 +149,27 @@
                     <div v-if="onGoingTodo.length === 0" class="font-medium text-lg text-gray-600">
                         There's no on-going task at the moment, santai dulu ga sih :V
                     </div>
-                    <div
-                        v-for="task in onGoingTodo"
-                        :key="task.title"
-                        :class="`todo-item ${task.status === 'not started'}`"
-                        class="flex items-center gap-2 mb-2"
-                    >
+                    <div v-for="task in onGoingTodo" :key="task.title" :class="`todo-item ${task.status === 'not started'}`"
+                        class="flex items-center gap-2 mb-2">
                         <p
-                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
+                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             <!-- {{ task.timestamp_date }} -->
                         </p>
                         <p
-                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
+                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             <!-- {{ task.timestamp_time }} -->
                         </p>
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
-                        <button
-                            @click="removeToDo(task)"
-                            class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all"
-                        >
+                            type="text" />
+                        <button @click="removeToDo(task)"
+                            class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </button>
                     </div>
@@ -187,38 +182,27 @@
                     <div v-if="completedTodo.length === 0" class="font-medium text-lg text-gray-600">
                         There's no completed task at the moment.
                     </div>
-                    <div
-                        v-for="task in completedTodo"
-                        :key="task.title"
-                        :class="`todo-item ${task.status === 'done'}`"
-                        class="flex items-center gap-2 mb-2"
-                    >
+                    <div v-for="task in completedTodo" :key="task.title" :class="`todo-item ${task.status === 'done'}`"
+                        class="flex items-center gap-2 mb-2">
                         <p
-                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
+                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             <!-- {{ task.timestamp_date }} -->
                         </p>
                         <p
-                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
-                        >
+                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             <!-- {{ task.timestamp_time }} -->
                         </p>
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
+                            type="text" />
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text"
-                        />
-                        <button
-                            @click="removeToDo(task)"
-                            class="text-white text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all"
-                        >
+                            type="text" />
+                        <button @click="removeToDo(task)"
+                            class="text-white text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </button>
                     </div>
@@ -244,64 +228,88 @@ export default {
             time: '', // initialize empty string for time
             week: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             name: '', // name of the category
-            categoryName: '',
+            selectedCategory: {},
+            categories: [],
+            isCategoryOptionsExpanded: false,
             categoryTaskCount: 0,
+            unfinished_todo: [],
         };
     },
     computed: {
-        unfinishedTodo() {
-            return this.todo.filter((task) => task.status === 'not started' && task.category === this.categoryName);
-        },
+        // unfinishedTodo() {
+        //     this.getAllTodos()
+        //     return this.todo.filter(
+        //         (task) => task.status === 'not started');
+        // },
         onGoingTodo() {
-            return this.todo.filter((task) => task.status === 'on going' && task.category === this.categoryName);
+            return this.todo.filter(
+                (task) => task.status === 'on progress');
         },
         completedTodo() {
-            return this.todo.filter((task) => task.status === 'done' && task.category === this.categoryName);
+            return this.todo.filter(
+                (task) => task.status === 'completed');
         },
         categoryTaskCount() {
-            return this.todo.filter((task) => task.category === this.categoryName).length;
+            return this.todo.filter(
+                (task) => task.category === this.selectedCategory).length;
         },
     },
     methods: {
+        setCategory(category) {
+            this.selectedCategory = category;
+            this.isCategoryOptionsExpanded = false;
+        },
+
+        async unfinishedTodo() {
+            this.unfinished_todo = this.todo.filter(
+                (task) => task.status === 'not started');
+        },
+
         async getAllTodos() {
+            this.todo = [];
+
             await fetch('http://localhost:3000/api/todo')
                 .then((response) => response.json())
                 .then((data) => {
-                    // console.log(data);
-                    this.todos = data.docs.map((todo) => todo.title);
-                    console.log(this.todos);
+                    data.docs.forEach((td) => { this.todo.push({'id': td.id, 'title': td.title, 'category': td.category.name, 'status': td.status}) });
+
+                    console.log(`DEBUG TODOS ${this.todos}`);
                 })
                 .catch((error) => {
                     console.error('An error occurred:', error);
                 });
+
+            await this.unfinishedTodo();
+            console.log(`[DEBUG] todo ${this.todos}`);
+            console.log(`[DEBUG] unfinished_todo ${this.unfinished_todo}`);
         },
         async getAllCategories() {
             await fetch('http://localhost:3000/api/categories')
                 .then((response) => response.json())
                 .then((data) => {
-                    console.log(data);
-                    this.categories = data.docs.map((categories) => categories.name);
-                    console.log(this.categories);
+                    data.docs.forEach((category) => { this.categories.push({ 'id': category.id, 'name': category.name }) });
+
+                    console.log(`DEBUG CATEGORIES ${this.categories}`);
                 })
                 .catch((error) => {
                     console.error('An error occurred:', error);
                 });
         },
         async addTask() {
+            console.log(`[DEBUG] ADD TASJ CLICKED`);
             if (this.content_input.trim() === '') {
                 return;
             }
 
             const newTask = {
-                name: this.content_input,
-                category: this.categories,
-                // publishedDate: new Date().toISOString(),the route parameter
-                // status: 'not started',
+                title: this.content_input,
+                // publishedDate: new Date().toISOString(),
+                category: this.selectedCategory.id,
+                status: 'not started',
             };
 
-            const newTodo = {
-                title: this.content_input,
-            };
+
+            console.log(newTask);
 
             try {
                 const response = await fetch('http://localhost:3000/api/todo', {
@@ -309,14 +317,18 @@ export default {
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(newTodo),
+                    body: JSON.stringify(newTask),
                 });
+
+                console.log(JSON.stringify(newTask));
+
 
                 if (response.ok) {
                     const data = await response.json();
                     console.log(data);
-                    this.todo.push(data);
+                    // this.todo.push(data);
                     this.content_input = '';
+
                 } else {
                     console.error('Failed to add task:', response.statusText);
                 }
@@ -370,6 +382,7 @@ export default {
         this.updateTime();
         this.getAllTodos();
         this.getAllCategories();
+        setInterval(this.getAllTodos, 1000);
         setInterval(this.updateTime, 1000); // update every 1 second
     },
 };

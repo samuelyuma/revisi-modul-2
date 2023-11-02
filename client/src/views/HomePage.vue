@@ -18,27 +18,33 @@
                 <form>
                     <h3 class="mt-2 font-semibold text-2xl mb-3">Add new task:</h3>
                     <div class="flex gap-2 mb-2">
-                        <input type="text" placeholder="Title" disabled
-                            class="placeholder-slate-900 w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-900 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center" />
-
-                        <input type="text" placeholder="Category" disabled
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900" />
-
+                        <p
+                            class="w-3/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-900 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center">
+                            Title
+                        </p>
+                        <p
+                            class="w-1/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center">
+                            Category
+                        </p>
                         <button class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-white">
                             <font-awesome-icon icon="fa-solid fa-plus" />
                         </button>
                     </div>
+
                     <div class="flex gap-2">
                         <input type="text" v-model="content_input" placeholder="e.g. Pemweb dapet A"
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400" />
+                            class="w-3/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400" />
 
                         <!-- dropdown category selction -->
-                        <div class="relative w-full">
+                        <div class="relative w-1/4">
                             <button type="button"
                                 class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-left relative"
                                 @click="isCategoryOptionsExpanded = !isCategoryOptionsExpanded"
                                 @blur="isCategoryOptionsExpanded = false">
-                                {{ selectedCategory.name }}
+                                <!-- {{ selectedCategory ? selectedCategory.name : placeholder_cat }} -->
+                                {{ displayCategory }}
+
+                                <!-- {{ selectedCategory.name }} -->
                                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"
                                     class="h-4 w-4 absolute right-3 top-1/2 transform -translate-y-1/2 transition-transform duration-200 ease-in-out"
                                     :class="isCategoryOptionsExpanded ? 'rotate-180' : 'rotate-0'">
@@ -88,7 +94,7 @@
                             type="text" v-model="task.title" />
 
                         <p
-                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+                            class="w-1/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             {{ task.category }}
                         </p>
 
@@ -101,7 +107,7 @@
                             </span>
                         </label>
 
-                        <button @click="removeToDo(task)"
+                        <button type="button" @click="removeToDo(task)"
                             class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </button>
@@ -125,7 +131,7 @@
                             type="text" v-model="task.title" />
 
                         <p
-                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+                            class="w-1/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             {{ task.category }}
                         </p>
 
@@ -138,7 +144,7 @@
                             </span>
                         </label>
 
-                        <button @click="removeToDo(task)"
+                        <button type="button" @click="removeToDo(task)"
                             class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </button>
@@ -162,11 +168,11 @@
                             type="text" v-model="task.title" />
 
                         <p
-                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
+                            class="w-1/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
                             {{ task.category }}
                         </p>
 
-                        <button @click="removeToDo(task)"
+                        <button type="button" @click="removeToDo(task)"
                             class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </button>
@@ -201,6 +207,7 @@ export default {
             unfinished_todo: [],
             completed_todo: [],
             progress_todo: [],
+            placeholder_cat: 'Select category',
         };
     },
     methods: {
@@ -406,6 +413,15 @@ export default {
             return (zero + num).slice(-digit); // ensure has requested digits
         },
     },
+    computed: {
+    displayCategory() {
+      if (!this.selectedCategory.name) {
+        return this.placeholder_cat;
+      } else {
+        return this.selectedCategory.name;
+      }
+    },
+  },
     mounted() {
         this.updateTime();
         this.getAllTodos();

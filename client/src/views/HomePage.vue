@@ -13,29 +13,6 @@
                 </div>
             </div>
 
-            <!-- <section> -->
-            <!-- Event handling ✅ v-on (@submit.prevent): prevent reload -->
-            <!-- <form @submit.prevent="addTask">
-                    <h3 class="mt-12 font-semibold text-2xl mb-3">Add new task:</h3>
-                    <div class="flex gap-2"> -->
-            <!-- Input bindings ✅ v-model: automatically update variable content_input to user input -->
-            <!-- <input
-                            type="text"
-                            v-model="content_input"
-                            placeholder="e.g. pemweb dapet A"
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                        /> -->
-
-            <!-- Event handling ✅ v-on (@): calls method when button is clicked -->
-            <!-- <button
-                            @click="addTask"
-                            class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all"
-                        >
-                            <font-awesome-icon icon="fa-solid fa-plus" />
-                        </button>
-                    </div>
-                </form>
-            </section> -->
 
             <section>
                 <form>
@@ -47,12 +24,6 @@
                         <input type="text" placeholder="Category" disabled
                             class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900" />
 
-                        <!-- <input
-                            type="text"
-                            placeholder="Status"
-                            disabled
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center placeholder-slate-900"
-                        /> -->
                         <button class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-white">
                             <font-awesome-icon icon="fa-solid fa-plus" />
                         </button>
@@ -63,7 +34,7 @@
 
                         <!-- dropdown category selction -->
                         <div class="relative w-full">
-                            <button
+                            <button type="button"
                                 class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-left relative"
                                 @click="isCategoryOptionsExpanded = !isCategoryOptionsExpanded"
                                 @blur="isCategoryOptionsExpanded = false">
@@ -92,12 +63,6 @@
                             </transition>
                         </div>
 
-                        <!-- <input
-                            type="text"
-                            placeholder="Not started"
-                            disabled
-                            class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                        /> -->
                         <button type="button" @click="addTask"
                             class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-plus" />
@@ -117,14 +82,6 @@
                     <div v-for="task in unfinished_todo" :key="task.id"
                         :class="`todo-item ${task.status === 'not started'}`" class="flex items-center gap-2 mb-2">
 
-                        <!-- <p
-                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
-                            {{ task.timestamp_date }}
-                        </p>
-                        <p
-                            class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
-                            {{ task.timestamp_time }}
-                        </p> -->
 
                         <input
                             class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
@@ -341,18 +298,26 @@ export default {
                 console.error('An error occurred:', error);
             }
         },
-        removeToDo(task) {
+
+        async removeToDo(task) {
+            console.log(`[DEBUG] REMOVE TODO CLICKED`);
+
             fetch(`http://localhost:3000/api/todo/${task.id}`, {
                 method: 'DELETE',
             })
-                .then(() => {
-                    const index = this.todo.indexOf(task);
-                    if (index !== -1) {
-                        this.todo.splice(index, 1);
+                .then((response) => {
+                    if (response.ok) {
+                        // Task was successfully deleted from the server, now remove it from the local todo array
+                        const index = this.todo.findIndex((item) => item.id === task.id);
+                        if (index !== -1) {
+                            this.todo.splice(index, 1);
+                        }
+                    } else {
+                        console.error('Failed to delete the task:', response.statusText);
                     }
                 })
                 .catch((error) => {
-                    console.error('REMOVE To-do error occured:', error);
+                    console.error('An error occurred:', error);
                 });
         },
 
@@ -430,6 +395,8 @@ export default {
                 ':' +
                 this.zeroPadding(current_date.getSeconds(), 2);
         },
+
+
         zeroPadding(num, digit) {
             // formatting leading zeros
             let zero = '';

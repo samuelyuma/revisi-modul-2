@@ -41,7 +41,7 @@
                 <form>
                     <h3 class="mt-2 font-semibold text-2xl mb-3">Add new task:</h3>
                     <div class="flex gap-2 mb-2">
-                        <input type="text" placeholder="Title"
+                        <input type="text" placeholder="Title" disabled
                             class="placeholder-slate-900 w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-900 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center" />
 
                         <input type="text" placeholder="Category" disabled
@@ -114,8 +114,8 @@
                         There's no task at the moment, santai dulu ga sih :V
                     </div>
 
-                    <div v-for="task in unfinished_todo" :key="task.id" :class="`todo-item ${task.status === 'not started'}`"
-                        class="flex items-center gap-2 mb-2">
+                    <div v-for="task in unfinished_todo" :key="task.id"
+                        :class="`todo-item ${task.status === 'not started'}`" class="flex items-center gap-2 mb-2">
 
                         <!-- <p
                             class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
@@ -135,6 +135,15 @@
                             {{ task.category }}
                         </p>
 
+                        <label class="relative">
+                            <input class="appearance-none bg-slate-200 py-5 px-6 rounded-xl cursor-pointer" type="checkbox"
+                                @change="markAsInProgress(task)" v-model="task.markedAsInProgress" />
+                            <span
+                                class="text-lg absolute inset-0 flex items-center justify-center bg-green-500 text-white rounded-xl cursor-pointer hover:bg-green-600 transition-all">
+                                <font-awesome-icon icon="fa-solid fa-check" />
+                            </span>
+                        </label>
+
                         <button @click="removeToDo(task)"
                             class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
@@ -144,30 +153,34 @@
             </section>
 
             <section class="flex flex-col gap-4 mt-16">
-                <h2 class="font-semibold text-2xl">On-Going Tasks</h2>
+                <h2 class="font-semibold text-2xl">On-going Tasks</h2>
                 <div class="flex-row gap-96">
-                    <div v-if="onGoingTodo.length === 0" class="font-medium text-lg text-gray-600">
-                        There's no on-going task at the moment, santai dulu ga sih :V
+                    <div v-if="progress_todo.length === 0" class="font-medium text-lg text-gray-600">
+                        There's no on going task at the moment, santai dulu ga sih :V
                     </div>
-                    <div v-for="task in onGoingTodo" :key="task.title" :class="`todo-item ${task.status === 'not started'}`"
+
+                    <div v-for="task in progress_todo" :key="task.id" :class="`todo-item ${task.status === 'on progress'}`"
                         class="flex items-center gap-2 mb-2">
-                        <p
-                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
-                            <!-- {{ task.timestamp_date }} -->
-                        </p>
+
+
+                        <input
+                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            type="text" v-model="task.title" />
+
                         <p
                             class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
-                            <!-- {{ task.timestamp_time }} -->
+                            {{ task.category }}
                         </p>
-                        <input
-                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text" />
-                        <input
-                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text" />
-                        <input
-                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text" />
+
+                        <label class="relative">
+                            <input class="appearance-none bg-slate-200 py-5 px-6 rounded-xl cursor-pointer" type="checkbox"
+                                @change="markAsCompleted(task)" v-model="task.markAsCompleted" />
+                            <span
+                                class="text-lg absolute inset-0 flex items-center justify-center bg-green-500 text-white rounded-xl cursor-pointer hover:bg-green-600 transition-all">
+                                <font-awesome-icon icon="fa-solid fa-check" />
+                            </span>
+                        </label>
+
                         <button @click="removeToDo(task)"
                             class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
@@ -176,38 +189,34 @@
                 </div>
             </section>
 
-            <section class="flex flex-col gap-5 mt-16">
+            <section class="flex flex-col gap-4 mt-16">
                 <h2 class="font-semibold text-2xl">Completed Tasks</h2>
-                <div class="flex-row gap-3">
-                    <div v-if="completedTodo.length === 0" class="font-medium text-lg text-gray-600">
-                        There's no completed task at the moment.
+                <div class="flex-row gap-96">
+                    <div v-if="completed_todo.length === 0" class="font-medium text-lg text-gray-600">
+                        There's no task at the moment, santai dulu ga sih :V
                     </div>
-                    <div v-for="task in completedTodo" :key="task.title" :class="`todo-item ${task.status === 'done'}`"
+
+                    <div v-for="task in completed_todo" :key="task.id" :class="`todo-item ${task.status === 'completed'}`"
                         class="flex items-center gap-2 mb-2">
-                        <p
-                            class="w-5/12 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
-                            <!-- {{ task.timestamp_date }} -->
-                        </p>
+
+
+                        <input
+                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            type="text" v-model="task.title" />
+
                         <p
                             class="w-1/6 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center">
-                            <!-- {{ task.timestamp_time }} -->
+                            {{ task.category }}
                         </p>
-                        <input
-                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text" />
-                        <input
-                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text" />
-                        <input
-                            class="w-screen border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
-                            type="text" />
+
                         <button @click="removeToDo(task)"
-                            class="text-white text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
+                            class="text-white font-medium text-lg px-4 py-2.5 rounded-xl bg-red-500 hover:bg-red-600 transition-all">
                             <font-awesome-icon icon="fa-solid fa-trash" />
                         </button>
                     </div>
                 </div>
             </section>
+
         </main>
     </section>
 </template>
@@ -233,26 +242,9 @@ export default {
             isCategoryOptionsExpanded: false,
             categoryTaskCount: 0,
             unfinished_todo: [],
+            completed_todo: [],
+            progress_todo: [],
         };
-    },
-    computed: {
-        // unfinishedTodo() {
-        //     this.getAllTodos()
-        //     return this.todo.filter(
-        //         (task) => task.status === 'not started');
-        // },
-        onGoingTodo() {
-            return this.todo.filter(
-                (task) => task.status === 'on progress');
-        },
-        completedTodo() {
-            return this.todo.filter(
-                (task) => task.status === 'completed');
-        },
-        categoryTaskCount() {
-            return this.todo.filter(
-                (task) => task.category === this.selectedCategory).length;
-        },
     },
     methods: {
         setCategory(category) {
@@ -265,13 +257,23 @@ export default {
                 (task) => task.status === 'not started');
         },
 
+        async progressTodo() {
+            this.progress_todo = this.todo.filter(
+                (task) => task.status === 'on progress');
+        },
+
+        async completedTodo() {
+            this.completed_todo = this.todo.filter(
+                (task) => task.status === 'completed');
+        },
+
         async getAllTodos() {
             this.todo = [];
 
             await fetch('http://localhost:3000/api/todo')
                 .then((response) => response.json())
                 .then((data) => {
-                    data.docs.forEach((td) => { this.todo.push({'id': td.id, 'title': td.title, 'category': td.category.name, 'status': td.status}) });
+                    data.docs.forEach((td) => { this.todo.push({ 'id': td.id, 'title': td.title, 'category': td.category.name, 'status': td.status }) });
 
                     console.log(`DEBUG TODOS ${this.todos}`);
                 })
@@ -280,6 +282,9 @@ export default {
                 });
 
             await this.unfinishedTodo();
+            await this.progressTodo();
+            await this.completedTodo();
+
             console.log(`[DEBUG] todo ${this.todos}`);
             console.log(`[DEBUG] unfinished_todo ${this.unfinished_todo}`);
         },
@@ -296,7 +301,7 @@ export default {
                 });
         },
         async addTask() {
-            console.log(`[DEBUG] ADD TASJ CLICKED`);
+            console.log(`[DEBUG] ADD TASK CLICKED`);
             if (this.content_input.trim() === '') {
                 return;
             }
@@ -350,6 +355,62 @@ export default {
                     console.error('REMOVE To-do error occured:', error);
                 });
         },
+
+
+        async markAsInProgress(task) {
+            task.status = 'on progress';
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/todo/${task.id}`, {
+                    method: 'PATCH', // Use PUT to update the task status
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: 'on progress' }), // Send the updated status
+                });
+
+                if (response.ok) {
+                    console.log('[UPDATE] Task status is now on progress');
+                } else {
+                    console.error('Failed to update task status:', response.statusText);
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+
+            await this.unfinishedTodo();
+            await this.progressTodo();
+        },
+
+
+        async markAsCompleted(task) {
+            task.status = 'completed';
+
+            try {
+                const response = await fetch(`http://localhost:3000/api/todo/${task.id}`, {
+                    method: 'PATCH', // Use PUT to update the task status
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: 'completed' }), // Send the updated status
+                });
+
+                if (response.ok) {
+                    console.log('[UPDATE] Task status is now completed');
+                } else {
+                    console.error('Failed to update task status:', response.statusText);
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+
+            await this.unfinishedTodo();
+            await this.progressTodo();
+            await this.completedTodo();
+
+        },
+
+
         updateTime() {
             const current_date = new Date(); // built in from JS
             this.date = // formatting the date
@@ -382,7 +443,7 @@ export default {
         this.updateTime();
         this.getAllTodos();
         this.getAllCategories();
-        setInterval(this.getAllTodos, 1000);
+        // setInterval(this.getAllTodos, 1000);
         setInterval(this.updateTime, 1000); // update every 1 second
     },
 };

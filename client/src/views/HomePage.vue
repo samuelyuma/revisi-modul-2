@@ -1,54 +1,34 @@
 <template>
-    <section>
+    <section class="bg-slate-900 h-screen text-white">
         <NavbarComponent />
         <main class="mx-32 my-10 font-poppins">
             <div class="flex items-center justify-between mb-8">
                 <div class="flex justify-between items-center">
-                    <h1 class="font-bold text-slate-800 text-4xl py-2">To Do List</h1>
-                </div>
-                <div class="text-black font-medium text-md pt-1 text-right">
-                    {{ date }}
-                    <br />
-                    {{ time }}
+                    <h1 class="font-bold text-white text-4xl py-2">Simple ToDoList App</h1>
                 </div>
             </div>
 
             <section>
                 <form>
                     <h3 class="mt-2 font-semibold text-2xl mb-3">Add new task:</h3>
-                    <div class="flex gap-2 mb-2">
-                        <p
-                            class="w-3/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-900 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center"
-                        >
-                            Title
-                        </p>
-                        <p
-                            class="w-1/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-center"
-                        >
-                            Category
-                        </p>
-                        <button class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-white">
-                            <font-awesome-icon icon="fa-solid fa-plus" />
-                        </button>
-                    </div>
 
                     <div class="flex gap-2">
                         <input
                             type="text"
-                            v-model="content_input"
+                            v-model="textInput"
                             placeholder="e.g. Pemweb dapet A"
-                            class="w-3/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            class="placeholder-gray-400 w-3/4 border-2 border-gray-600 rounded-xl bg-gray-700 text-lg text-white px-3 py-2 focus:ring-0 focus:border-blue-500 focus:outline-none"
                         />
 
                         <!-- dropdown category selction -->
                         <div class="relative w-1/4">
                             <button
                                 type="button"
-                                class="w-full border-2 border-slate-400 rounded-xl bg-slate-200 font-semibold text-lg text-slate-600 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400 text-left relative"
+                                class="w-full border-2 border-gray-600 rounded-xl bg-gray-700 font-medium text-lg text-gray-400 px-3 py-2 focus:ring-0 focus:border-gray-600 focus:outline-gray-600 text-left relative"
                                 @click="isCategoryOptionsExpanded = !isCategoryOptionsExpanded"
                                 @blur="isCategoryOptionsExpanded = false"
                             >
-                                <!-- {{ selectedCategory ? selectedCategory.name : placeholder_cat }} -->
+                                <!-- {{ selectedCategory ? selectedCategory.name : categoryPlaceholder }} -->
                                 {{ displayCategory }}
 
                                 <!-- {{ selectedCategory.name }} -->
@@ -77,12 +57,12 @@
                             >
                                 <ul
                                     v-show="isCategoryOptionsExpanded"
-                                    class="absolute left-0 right-0 mt-2 bg-white border border-slate-400 rounded-lg shadow-lg overflow-hidden"
+                                    class="absolute left-0 right-0 mt-2 bg-gray-700 border-2 border-gray-600 rounded-lg shadow-lg overflow-hidden"
                                 >
                                     <li
                                         v-for="(category, index) in categories"
                                         :key="index"
-                                        class="px-3 py-2 transition-colors duration-300 hover:bg-gray-200 cursor-pointer"
+                                        class="px-3 py-2 text-gray-400 hover:text-white transition-colors duration-300 hover:bg-gray-500 cursor-pointer"
                                         @mousedown.prevent="setCategory(category)"
                                     >
                                         {{ category.name }}
@@ -94,7 +74,7 @@
                         <button
                             type="button"
                             @click="addTask"
-                            class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-green-500 hover:bg-green-600 transition-all"
+                            class="text-white font-medium text-lg px-12 py-2.5 rounded-xl bg-blue-400 hover:bg-blue-500 transition-all"
                         >
                             <font-awesome-icon icon="fa-solid fa-plus" />
                         </button>
@@ -105,24 +85,24 @@
             <section class="flex flex-col gap-4 mt-8">
                 <h2 class="font-semibold text-2xl">Not-started Tasks</h2>
                 <div class="flex-row gap-96">
-                    <div v-if="unfinished_todo.length === 0" class="font-medium text-lg text-gray-600">
-                        There's no task at the moment, santai dulu ga sih :V
+                    <div v-if="unfinishedTask.length === 0" class="font-medium text-lg text-slate-400">
+                        There's no task at the moment.
                     </div>
 
                     <div
-                        v-for="task in unfinished_todo"
+                        v-for="task in unfinishedTask"
                         :key="task.id"
                         :class="`todo-item ${task.status === 'not started'}`"
                         class="flex items-center gap-2 mb-2"
                     >
                         <input
-                            class="w-3/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            class="placeholder-gray-400 w-3/4 border-2 border-gray-600 rounded-xl bg-gray-700 text-lg text-white px-3 py-2 focus:ring-0 focus:border-blue-500 focus:outline-none"
                             type="text"
                             v-model="task.title"
                         />
 
                         <p
-                            class="w-1/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
+                            class="w-1/4 border-2 border-gray-600 rounded-xl bg-gray-700 font-medium text-lg text-white px-3 py-2 text-center"
                         >
                             {{ task.category }}
                         </p>
@@ -135,7 +115,7 @@
                                 v-model="task.markedAsInProgress"
                             />
                             <span
-                                class="text-lg absolute inset-0 flex items-center justify-center bg-green-500 text-white rounded-xl cursor-pointer hover:bg-green-600 transition-all"
+                                class="text-lg absolute inset-0 flex items-center justify-center bg-blue-500 text-white rounded-xl cursor-pointer hover:bg-blue-600 transition-all"
                             >
                                 <font-awesome-icon icon="fa-solid fa-check" />
                             </span>
@@ -155,24 +135,24 @@
             <section class="flex flex-col gap-4 mt-8">
                 <h2 class="font-semibold text-2xl">On-going Tasks</h2>
                 <div class="flex-row gap-96">
-                    <div v-if="progress_todo.length === 0" class="font-medium text-lg text-gray-600">
-                        There's no on going task at the moment, santai dulu ga sih :V
+                    <div v-if="onProgressTask.length === 0" class="font-medium text-lg text-slate-400">
+                        There's no on going task at the moment.
                     </div>
 
                     <div
-                        v-for="task in progress_todo"
+                        v-for="task in onProgressTask"
                         :key="task.id"
                         :class="`todo-item ${task.status === 'on progress'}`"
                         class="flex items-center gap-2 mb-2"
                     >
                         <input
-                            class="w-3/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            class="placeholder-gray-400 w-3/4 border-2 border-gray-600 rounded-xl bg-gray-700 text-lg text-white px-3 py-2 focus:ring-0 focus:border-blue-500 focus:outline-none"
                             type="text"
                             v-model="task.title"
                         />
 
                         <p
-                            class="w-1/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
+                            class="w-1/4 border-2 border-gray-600 rounded-xl bg-gray-700 font-medium text-lg text-white px-3 py-2 text-center"
                         >
                             {{ task.category }}
                         </p>
@@ -185,7 +165,7 @@
                                 v-model="task.markAsCompleted"
                             />
                             <span
-                                class="text-lg absolute inset-0 flex items-center justify-center bg-green-500 text-white rounded-xl cursor-pointer hover:bg-green-600 transition-all"
+                                class="text-lg absolute inset-0 flex items-center justify-center bg-blue-400 text-white rounded-xl cursor-pointer hover:bg-blue-500 transition-all"
                             >
                                 <font-awesome-icon icon="fa-solid fa-check" />
                             </span>
@@ -205,24 +185,24 @@
             <section class="flex flex-col gap-4 mt-8">
                 <h2 class="font-semibold text-2xl">Completed Tasks</h2>
                 <div class="flex-row gap-96">
-                    <div v-if="completed_todo.length === 0" class="font-medium text-lg text-gray-600">
-                        There's no task at the moment, santai dulu ga sih :V
+                    <div v-if="completedTask.length === 0" class="font-medium text-lg text-slate-400">
+                        There's no task at the moment.
                     </div>
 
                     <div
-                        v-for="task in completed_todo"
+                        v-for="task in completedTask"
                         :key="task.id"
                         :class="`todo-item ${task.status === 'completed'}`"
                         class="flex items-center gap-2 mb-2"
                     >
                         <input
-                            class="w-3/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 focus:ring-0 focus:border-transparent focus:outline-slate-400"
+                            class="placeholder-gray-400 w-3/4 border-2 border-gray-600 rounded-xl bg-gray-700 text-lg text-white px-3 py-2 focus:ring-0 focus:border-blue-500 focus:outline-none"
                             type="text"
                             v-model="task.title"
                         />
 
                         <p
-                            class="w-1/4 border-2 border-slate-400 rounded-xl bg-slate-200 font-medium text-lg text-slate-700 px-3 py-2 text-center"
+                            class="w-1/4 border-2 border-gray-600 rounded-xl bg-gray-700 font-medium text-lg text-white px-3 py-2 text-center"
                         >
                             {{ task.category }}
                         </p>
@@ -242,8 +222,8 @@
 </template>
 
 <script>
-import axios from 'axios';
 import NavbarComponent from '@/components/NavbarComponent.vue';
+import { watchEffect } from 'vue';
 
 export default {
     components: {
@@ -251,20 +231,18 @@ export default {
     },
     data() {
         return {
-            todo: [], // initialize empty array for todo list
-            content_input: '', // initialize empty string for todo content
-            date: '', // initialize empty string for date
-            time: '', // initialize empty string for time
-            week: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            name: '', // name of the category
-            selectedCategory: {},
+            name: '',
+            todo: [],
+            textInput: '',
             categories: [],
-            isCategoryOptionsExpanded: false,
+            completedTask: [],
+            unfinishedTask: [],
+            onProgressTask: [],
+            selectedCategory: {},
             categoryTaskCount: 0,
-            unfinished_todo: [],
-            completed_todo: [],
-            progress_todo: [],
-            placeholder_cat: 'Select category',
+            isFetchingData: false,
+            isCategoryOptionsExpanded: false,
+            categoryPlaceholder: 'Select category',
         };
     },
     methods: {
@@ -274,15 +252,15 @@ export default {
         },
 
         async unfinishedTodo() {
-            this.unfinished_todo = this.todo.filter((task) => task.status === 'not started');
+            this.unfinishedTask = this.todo.filter((task) => task.status === 'not started');
         },
 
         async progressTodo() {
-            this.progress_todo = this.todo.filter((task) => task.status === 'on progress');
+            this.onProgressTask = this.todo.filter((task) => task.status === 'on progress');
         },
 
         async completedTodo() {
-            this.completed_todo = this.todo.filter((task) => task.status === 'completed');
+            this.completedTask = this.todo.filter((task) => task.status === 'completed');
         },
 
         async getAllTodos() {
@@ -292,10 +270,15 @@ export default {
                 .then((response) => response.json())
                 .then((data) => {
                     data.docs.forEach((td) => {
-                        this.todo.push({ id: td.id, title: td.title, category: td.category.name, status: td.status });
+                        this.todo.push({
+                            id: td.id,
+                            title: td.title,
+                            category: td.category.name,
+                            status: td.status,
+                        });
                     });
 
-                    console.log(`DEBUG TODOS ${this.todos}`);
+                    console.log('[GET] Todo - Successful');
                 })
                 .catch((error) => {
                     console.error('An error occurred:', error);
@@ -304,9 +287,6 @@ export default {
             await this.unfinishedTodo();
             await this.progressTodo();
             await this.completedTodo();
-
-            console.log(`[DEBUG] todo ${this.todos}`);
-            console.log(`[DEBUG] unfinished_todo ${this.unfinished_todo}`);
         },
         async getAllCategories() {
             await fetch('http://localhost:3000/api/categories')
@@ -316,21 +296,19 @@ export default {
                         this.categories.push({ id: category.id, name: category.name });
                     });
 
-                    console.log(`DEBUG CATEGORIES ${this.categories}`);
+                    console.log('[GET] Categories - Successful');
                 })
                 .catch((error) => {
                     console.error('An error occurred:', error);
                 });
         },
         async addTask() {
-            console.log(`[DEBUG] ADD TASK CLICKED`);
-            if (this.content_input.trim() === '') {
+            if (this.textInput.trim() === '') {
                 return;
             }
 
             const newTask = {
-                title: this.content_input,
-                // publishedDate: new Date().toISOString(),
+                title: this.textInput,
                 category: this.selectedCategory.id,
                 status: 'not started',
             };
@@ -351,8 +329,7 @@ export default {
                 if (response.ok) {
                     const data = await response.json();
                     console.log(data);
-                    // this.todo.push(data);
-                    this.content_input = '';
+                    this.textInput = '';
                 } else {
                     console.error('Failed to add task:', response.statusText);
                 }
@@ -362,14 +339,11 @@ export default {
         },
 
         async removeToDo(task) {
-            console.log(`[DEBUG] REMOVE TODO CLICKED`);
-
             fetch(`http://localhost:3000/api/todo/${task.id}`, {
                 method: 'DELETE',
             })
                 .then((response) => {
                     if (response.ok) {
-                        // Task was successfully deleted from the server, now remove it from the local todo array
                         const index = this.todo.findIndex((item) => item.id === task.id);
                         if (index !== -1) {
                             this.todo.splice(index, 1);
@@ -388,11 +362,11 @@ export default {
 
             try {
                 const response = await fetch(`http://localhost:3000/api/todo/${task.id}`, {
-                    method: 'PATCH', // Use PUT to update the task status
+                    method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ status: 'on progress' }), // Send the updated status
+                    body: JSON.stringify({ status: 'on progress' }),
                 });
 
                 if (response.ok) {
@@ -413,11 +387,11 @@ export default {
 
             try {
                 const response = await fetch(`http://localhost:3000/api/todo/${task.id}`, {
-                    method: 'PATCH', // Use PUT to update the task status
+                    method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ status: 'completed' }), // Send the updated status
+                    body: JSON.stringify({ status: 'completed' }),
                 });
 
                 if (response.ok) {
@@ -433,51 +407,27 @@ export default {
             await this.progressTodo();
             await this.completedTodo();
         },
-
-        updateTime() {
-            const current_date = new Date(); // built in from JS
-            this.date = // formatting the date
-                this.week[current_date.getDay()] + // according to array week
-                ', ' +
-                this.zeroPadding(current_date.getDate(), 2) +
-                ' - ' +
-                this.zeroPadding(current_date.getMonth() + 1, 2) + // since January = 0, we add 1
-                ' - ' +
-                this.zeroPadding(current_date.getFullYear(), 4) +
-                ' ';
-
-            this.time = // formatting the time
-                this.zeroPadding(current_date.getHours(), 2) +
-                ':' +
-                this.zeroPadding(current_date.getMinutes(), 2) +
-                ':' +
-                this.zeroPadding(current_date.getSeconds(), 2);
-        },
-
-        zeroPadding(num, digit) {
-            // formatting leading zeros
-            let zero = '';
-            for (let i = 0; i < digit; i++) {
-                zero += '0';
-            }
-            return (zero + num).slice(-digit); // ensure has requested digits
-        },
     },
     computed: {
         displayCategory() {
             if (!this.selectedCategory.name) {
-                return this.placeholder_cat;
+                return this.categoryPlaceholder;
             } else {
                 return this.selectedCategory.name;
             }
         },
     },
     mounted() {
-        this.updateTime();
-        this.getAllTodos();
         this.getAllCategories();
-        // setInterval(this.getAllTodos, 1000);
-        setInterval(this.updateTime, 1000); // update every 1 second
+
+        setInterval(() => {
+            if (!this.isFetchingData) {
+                this.isFetchingData = true;
+                this.getAllTodos().finally(() => {
+                    this.isFetchingData = false;
+                });
+            }
+        }, 1000);
     },
 };
 </script>
